@@ -13,15 +13,18 @@
   {% endif%}
   <button type="button" class="btn btn-large btn-info" id="showWaveBtn" onclick="showWave();">Render Waveform</button>
   <div id="waveform"></div>
-  <button type="button" class="btn btn-large btn-success" data-action="play">Play/Pause</button>
   <script>
-  var wavesurfer;
-  let waveFormRendered = false;
+    var wavesurfer;
+    let waveFormRendered = false;
+    let channels = {{ wav_info["Channels"] }};
+    let splitter;
+    //let mergerNodes = [];
+    let gainNodes = [];
     function showWave(){
       if (waveFormRendered === false){
         wavesurfer = WaveSurfer.create({
           container: '#waveform',
-          backend: 'MediaElement',
+          backend: 'MediaElementWebAudio',
           waveColor: 'violet',
           progressColor: 'purple',
           minPxPerSec: 30,
@@ -32,26 +35,55 @@
         });
         fetch('/' + '{{ jsonpath }}')
         .then(response => {
-            if (!response.ok) {
-                throw new Error("HTTP error " + response.status);
-            }
-            return response.json();
+          if (!response.ok) {
+              throw new Error("HTTP error " + response.status);
+          }
+          return response.json();
         })
         .then(peaks => {
-            console.log('loaded peaks! sample_rate: ' + peaks.sample_rate);
-            // load peaks into wavesurfer.js
-            wavesurfer.load("/" + "{{ path }}", peaks.data);
+          console.log('loaded peaks! sample_rate: ' + peaks.sample_rate);
+          // load peaks into wavesurfer.js
+          wavesurfer.load("/" + "{{ path }}", peaks.data);
+          initSoloNodes();
         })
         .catch((e) => {
-            console.error('error', e);
+          console.error('error', e);
         });
-
-        //wavesurfer.load("/" + "{{ path }}");
-        document
-          .querySelector('[data-action="play"]')
-          .addEventListener('click', wavesurfer.playPause.bind(wavesurfer));
+        //initSoloNodes(wavesurfer.backend.media);
+        waveFormRendered = true;
       }
-      waveFormRendered = true;
+    }
+
+    function initSoloNodes(){
+      //var ctx = new AudioContext();
+      //var mediaElementSource = ctx.createMediaElementSource(node);
+      wavesurfer.backend.sourceMediaElement.disconnect();
+      let splitter = wavesurfer.backend.ac.createChannelSplitter(channels);
+      for (ch of Array(channels).keys()){
+        gainNodes[ch] = wavesurfer.backend.ac.createGain();
+        splitter.connect(gainNodes[ch], ch, 0);
+        gainNodes[ch].connect(wavesurfer.backend.ac.destination);
+      }
+      wavesurfer.backend.sourceMediaElement.connect(splitter);
+      /*
+      splitter = ctx.createChannelSplitter(channels);
+      gainNodes = [];
+      for (let ch of Array(channels).keys()){
+        gainNodes[ch] = ctx.createGain();
+        splitter.connect(gainNodes[ch], ch, 0);
+        //gainNodes[ch].connect(ctx.destination);
+      }
+      for (let ch of Array(Math.ceil(channels/2)).keys()){
+        mergerNodes[ch] = ctx.createChannelMerger(2);
+        gainNodes[2*ch].connect(mergerNodes[ch], 0, 0);
+        gainNodes[2*ch+1].connect(mergerNodes[ch], 0, 1);
+        mergerNodes[ch].connect(ctx.destination);
+      }
+      mediaElementSource.connect(splitter);
+      //var gainNode = ctx.createGain();
+      //merger.connect(gainNode);
+      //gainNode.connect(ctx.destination);
+      */
     }
   </script>
 {% endblock %}
