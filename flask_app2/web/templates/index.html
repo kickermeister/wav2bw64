@@ -1,0 +1,10 @@
+
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block body %}
+<h1>Upload new File</h1>
+<form method="post" enctype="multipart/form-data">
+  <input type="file"  accept="audio/wav" name="file">
+  <input type="submit" value="Upload">
+</form>
+{% endblock %}

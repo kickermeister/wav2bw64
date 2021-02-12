@@ -1,0 +1,12 @@
+
+{% extends "base.html" %}
+{% block title %}WAV File Info{% endblock %}
+{% block body %}
+<h1>WAV File Info: {{ filename }}</h1>
+  {% if wav_info %}
+    <p>Channels: {{wav_info["Channels"]}}</p>
+    <p>File Format: {{wav_info["File Format"]}}</p>
+    <p>Bit Depth: {{wav_info["Bit Depth"]}}</p>
+    <p>bext Chunk: {{wav_info["bext chunk"]}}</p>
+  {% endif%}
+{% endblock %}
