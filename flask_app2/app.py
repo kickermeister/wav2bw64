@@ -1,7 +1,9 @@
 import os
 import sys
+import subprocess
 from flask import Flask, flash, request, redirect, url_for, send_from_directory, render_template
 from werkzeug.utils import secure_filename
+from scale_json import scale_json
 sys.path.append("../")
 from fileio import get_wav_info
 
@@ -41,7 +43,13 @@ def show_wav_info(filename):
     path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     wav_info = get_wav_info(path)
     print("Showing WAV info...")
+    jsonpath = os.path.splitext(path)[0] + '.json'
+    cmd = ["audiowaveform", "-i", path, "-o", jsonpath, "--pixels-per-second", "30", "--bits", "8", "--split-channels"]
+    _ = subprocess.run(cmd)
+    scale_json(jsonpath)
     return render_template('wav-info.html',
+                           path=path,
+                           jsonpath=jsonpath,
                            filename=filename,
                            wav_info=wav_info)
 
