@@ -42,16 +42,19 @@ def upload_file():
 def show_wav_info(filename):
     path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     wav_info = get_wav_info(path)
-    print("Showing WAV info...")
-    jsonpath = os.path.splitext(path)[0] + '.json'
-    cmd = ["audiowaveform", "-i", path, "-o", jsonpath, "--pixels-per-second", "30", "--bits", "8", "--split-channels"]
-    _ = subprocess.run(cmd)
-    scale_json(jsonpath)
-    return render_template('wav-info.html',
-                           path=path,
-                           jsonpath=jsonpath,
-                           filename=filename,
-                           wav_info=wav_info)
+    if wav_info["Channels"] > 8:
+        flash('Supporting only WAV files with up to 8 channels')
+        return redirect("/")
+    else:
+        jsonpath = os.path.splitext(path)[0] + '.json'
+        cmd = ["audiowaveform", "-i", path, "-o", jsonpath, "--pixels-per-second", "30", "--bits", "8", "--split-channels"]
+        _ = subprocess.run(cmd)
+        scale_json(jsonpath)
+        return render_template('wav-info.html',
+                               path=path,
+                               jsonpath=jsonpath,
+                               filename=filename,
+                               wav_info=wav_info)
 
 
 @app.route('/uploads/<filename>')
