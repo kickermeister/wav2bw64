@@ -1,5 +1,5 @@
+import sys
 import json
-import numpy as np
 
 
 def scale_json(filename):
@@ -25,7 +25,7 @@ def scale_json(filename):
 
 
 def deinterleave(data, channelCount):
-    deinterleaved = [np.array(data)[idx::channelCount * 2] for idx in range(channelCount * 2)]
+    deinterleaved = [data[idx::channelCount * 2] for idx in range(channelCount * 2)]
     new_data = []
     for ch in range(channelCount):
         idx1 = 2 * ch
@@ -35,3 +35,11 @@ def deinterleave(data, channelCount):
         ch_data[1::2] = deinterleaved[idx2]
         new_data.append(ch_data)
     return new_data
+
+
+if __name__ == '__main__':
+    if len(sys.argv) < 2:
+        print("Usage: python scale_json.py file.json")
+        exit()
+    filename = sys.argv[1]
+    scale_json(filename)
