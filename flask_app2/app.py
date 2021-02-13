@@ -1,11 +1,13 @@
 import os
 import sys
 import subprocess
-from flask import Flask, flash, request, redirect, url_for, send_from_directory, render_template
+import json
+from flask import Flask, flash, request, redirect, url_for, send_from_directory, render_template, jsonify
 from werkzeug.utils import secure_filename
+from ear.core import bs2051
 from scale_json import scale_json
 sys.path.append("../")
-from fileio import get_wav_info
+from fileio import get_wav_info, generate_bw64_file
 
 UPLOAD_FOLDER = 'uploads'
 
@@ -42,6 +44,7 @@ def upload_file():
 def show_wav_info(filename):
     path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     wav_info = get_wav_info(path)
+    bs2051_layouts = bs2051.layout_names
     if wav_info["Channels"] > 8:
         flash('Supporting only WAV files with up to 8 channels')
         return redirect("/")
@@ -54,13 +57,28 @@ def show_wav_info(filename):
                                path=path,
                                jsonpath=jsonpath,
                                filename=filename,
-                               wav_info=wav_info)
+                               wav_info=wav_info,
+                               bs2051_layouts=bs2051_layouts)
 
 
-@app.route('/uploads/<filename>')
-def uploaded_file(filename):
+@app.route('/bw64/<filename>')
+def download_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'],
                                filename)
+@app.context_processor
+def get_bs2051_layouts():
+    bs2051_layouts = bs2051.layout_names
+    return dict(bs2051_layouts=bs2051_layouts)
+
+@app.route("/set_bw64_config", methods=['POST'])
+def set_bw64_config():
+    print(request.form)
+    in_wav_path = request.form['in_wav_path']
+    out_bwav_path = request.form['out_bwav_path']
+    adm_dict = json.loads(request.form['adm_dict'])
+    generate_bw64_file(in_wav_path, out_bwav_path, adm_dict)
+    out_bwav = out_bwav_path.rsplit('/', 1)[-1]
+    return redirect(url_for('download_file', filename=out_bwav))
 
 
 if __name__ == '__main__':
