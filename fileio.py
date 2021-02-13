@@ -41,8 +41,8 @@ def generate_adm(adm_dict, bitDepth=16, sampleRate=48000):
 
 
 def generate_bw64_file(in_wav_path, out_bwav_path, adm_dict, screen=None):
-    adm = generate_adm({'0+5+0': [1, 2, 3, 4, 5, 6], '0+2+0': [7, 8]})
-
+    # adm = generate_adm({'0+5+0': [1, 2, 3, 4, 5, 6], '0+2+0': [7, 8]})
+    adm = generate_adm(adm_dict)
     if screen is not None:
         adm.audioProgrammes[0].referenceScreen = screen
 
