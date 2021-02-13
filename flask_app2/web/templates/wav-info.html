@@ -3,6 +3,10 @@
 {% block title %}WAV File Info{% endblock %}
 {% block body %}
   <script src="https://unpkg.com/wavesurfer.js"></script>
+  <script
+  src="https://code.jquery.com/jquery-3.5.1.min.js"
+  integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+  crossorigin="anonymous"></script>
 
   <h1>WAV File Info: {{ filename }}</h1>
   {% if wav_info %}
@@ -12,6 +16,13 @@
     <p>bext Chunk: {{wav_info["bext chunk"]}}</p>
   {% endif%}
   <button type="button" class="btn btn-large btn-info" id="showWaveBtn" onclick="showWave();">Render Waveform</button>
+  <div class="input-group mb-3">
+    <input type="text" class="form-control" placeholder="{'0+5+0': [1, 2, 3, 4, 5, 6], '0+2+0': [7, 8]}" aria-label="adm_config" aria-describedby="basic-addon2" id="adm_config_input">
+    <div class="input-group-append">
+      <button class="btn btn-outline-secondary" type="button" onclick="generateBW64File();">Create BW64</button>
+    </div>
+  </div>
+  <button class="btn btn-outline-warning" type="button" onclick="generateBW64File();">Create BW64</button>
   <div id="waveform"></div>
   <script>
     var wavesurfer;
@@ -49,14 +60,11 @@
         .catch((e) => {
           console.error('error', e);
         });
-        //initSoloNodes(wavesurfer.backend.media);
         waveFormRendered = true;
       }
     }
 
     function initSoloNodes(){
-      //var ctx = new AudioContext();
-      //var mediaElementSource = ctx.createMediaElementSource(node);
       wavesurfer.backend.sourceMediaElement.disconnect();
       let splitter = wavesurfer.backend.ac.createChannelSplitter(channels);
       for (ch of Array(channels).keys()){
@@ -65,25 +73,26 @@
         gainNodes[ch].connect(wavesurfer.backend.ac.destination);
       }
       wavesurfer.backend.sourceMediaElement.connect(splitter);
-      /*
-      splitter = ctx.createChannelSplitter(channels);
-      gainNodes = [];
-      for (let ch of Array(channels).keys()){
-        gainNodes[ch] = ctx.createGain();
-        splitter.connect(gainNodes[ch], ch, 0);
-        //gainNodes[ch].connect(ctx.destination);
-      }
-      for (let ch of Array(Math.ceil(channels/2)).keys()){
-        mergerNodes[ch] = ctx.createChannelMerger(2);
-        gainNodes[2*ch].connect(mergerNodes[ch], 0, 0);
-        gainNodes[2*ch+1].connect(mergerNodes[ch], 0, 1);
-        mergerNodes[ch].connect(ctx.destination);
-      }
-      mediaElementSource.connect(splitter);
-      //var gainNode = ctx.createGain();
-      //merger.connect(gainNode);
-      //gainNode.connect(ctx.destination);
-      */
     }
+
+    function generateBW64File(){
+      var in_path = "{{ path }}";
+      var out_path = in_path.substr(0, in_path.lastIndexOf(".")) + "_bw64.wav";
+      //var adm_config = $('#adm_config_input').val();
+      var adm_config = {'0+5+0': [1, 2, 3, 4, 5, 6], '0+2+0': [7, 8]};
+      $.post("/set_bw64_config", {
+        in_wav_path: in_path,
+        out_bwav_path: out_path,
+        adm_dict: JSON.stringify(adm_config)
+      }).done(function(response){
+        console.log("BW64 File successfully created.");
+      }).fail(function(){
+        console.log("BW64 File failed.");
+      });
+    }
+
+    {% for layout in bs2051_layouts %}
+      console.log("{{ layout }}");
+    {% endfor %}
   </script>
 {% endblock %}
