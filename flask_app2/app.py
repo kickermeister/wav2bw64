@@ -62,7 +62,7 @@ def show_wav_info(filename):
 
 
 @app.route('/uploads/<filename>')
-def download_file(filename):
+def uploads(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'],
                                filename)
 @app.context_processor
