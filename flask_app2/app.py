@@ -61,7 +61,7 @@ def show_wav_info(filename):
                                bs2051_layouts=bs2051_layouts)
 
 
-@app.route('/bw64/<filename>')
+@app.route('/uploads/<filename>')
 def download_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'],
                                filename)
