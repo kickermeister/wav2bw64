@@ -1,0 +1,39 @@
+audioProgrammes:
+    - name: "5.1"
+      items:
+          - type: "DirectSpeakers"
+            channels: [0]
+            blocks:
+                - speakerLabel: ["M+030"]
+          - type: "DirectSpeakers"
+            channels: [1]
+            blocks:
+                - speakerLabel: ["M-030"]
+          - type: "DirectSpeakers"
+            channels: [2]
+            blocks:
+                - speakerLabel: ["M+000"]
+          - type: "DirectSpeakers"
+            channels: [3]
+            frequency:
+                lowPass: 120.0
+            blocks:
+                - speakerLabel: ["LFE1"]
+          - type: "DirectSpeakers"
+            channels: [4]
+            blocks:
+                - speakerLabel: ["M+110"]
+          - type: "DirectSpeakers"
+            channels: [5]
+            blocks:
+                - speakerLabel: ["M-110"]
+    - name: "Stereo"
+      items:
+          - type: "DirectSpeakers"
+            channels: [6]
+            blocks:
+                - speakerLabel: ["M+030"]
+          - type: "DirectSpeakers"
+            channels: [7]
+            blocks:
+                - speakerLabel: ["M-030"]
