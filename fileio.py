@@ -42,6 +42,11 @@ def generate_adm(adm_dict, bitDepth=16, sampleRate=48000):
 
 def generate_bw64_file(in_wav_path, out_bwav_path, adm_dict, screen=None):
     # adm = generate_adm({'0+5+0': [1, 2, 3, 4, 5, 6], '0+2+0': [7, 8]})
+    wav_info = get_wav_info(in_wav_path)
+    highest_nr = _find_highest_channel_number(adm_dict)
+    if wav_info["Channels"] < highest_nr:
+        print("ERROR: File has only %s channels but %s are defined in ADM metadata! Aborting." % (wav_info["Channels"], highest_nr))
+        return False
     adm = generate_adm(adm_dict)
     if screen is not None:
         adm.audioProgrammes[0].referenceScreen = screen
@@ -66,6 +71,14 @@ def generate_bw64_file(in_wav_path, out_bwav_path, adm_dict, screen=None):
                 if samples.shape[0] == 0:
                     break
                 outfile.write(samples)
+    return True
+
+
+def _find_highest_channel_number(adm_dict):
+    max_values = []
+    for sys, channels in adm_dict.items():
+        max_values.append(max(channels))
+    return max(max_values)
 
 
 @attrs
@@ -94,27 +107,27 @@ class ExtendedADMBuilder(ADMBuilder):
         print("Detected Pack Format: %s", pack_format, "\n")
 
         requiredstreamformats = [audioStreamFormatLookupTable[x] for x in layout.channel_names]
-        print("Required stream formats: ", requiredstreamformats)
+        # print("Required stream formats: ", requiredstreamformats)
         # stream_format = [x for x in self.adm._asf if x.id in requiredstreamformats]
         stream_format = []
         for id in requiredstreamformats:
             for asf in self.adm._asf:
                 if id == asf.id:
                     stream_format.append(asf)
-                    print("Add to stream_format: ", asf.id)
-        print("Detected Stream Format: %s", stream_format, "\n")
+                    # print("Add to stream_format: ", asf.id)
+        # print("Detected Stream Format: %s", stream_format, "\n")
 
         requiredtrackformats = [audioTrackFormatLookupTable[x] for x in layout.channel_names]
-        print("Required track formats: ", requiredtrackformats)
+        # print("Required track formats: ", requiredtrackformats)
         # track_format = [x for x in self.adm._atf if x.id in requiredtrackformats]
         track_format = []
         for id in requiredtrackformats:
             for atf in self.adm._atf:
                 if id == atf.id:
                     track_format.append(atf)
-                    print("Add to track_format: ", atf.id)
-        for idx, trackformat in enumerate(track_format):
-            print("Detected Track Format: ", trackformat.id)
+                    # print("Add to track_format: ", atf.id)
+        # for idx, trackformat in enumerate(track_format):
+            # print("Detected Track Format: ", trackformat.id)
 
         channel_format = pack_format.audioChannelFormats[:]
 

@@ -76,9 +76,12 @@ def set_bw64_config():
     in_wav_path = request.form['in_wav_path']
     out_bwav_path = request.form['out_bwav_path']
     adm_dict = json.loads(request.form['adm_dict'])
-    generate_bw64_file(in_wav_path, out_bwav_path, adm_dict)
-    out_bwav = out_bwav_path.rsplit('/', 1)[-1]
-    return redirect(url_for('download_file', filename=out_bwav))
+    res = generate_bw64_file(in_wav_path, out_bwav_path, adm_dict)
+    if res is True:
+        out_bwav = out_bwav_path.rsplit('/', 1)[-1]
+        return redirect(url_for('download_file', filename=out_bwav))
+    else:
+        return 'Something went wrong!', 400
 
 
 if __name__ == '__main__':
