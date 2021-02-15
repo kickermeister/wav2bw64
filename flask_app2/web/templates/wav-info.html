@@ -1,12 +1,8 @@
-
 {% extends "base.html" %}
 {% block title %}WAV File Info{% endblock %}
 {% block body %}
   <script src="https://unpkg.com/wavesurfer.js"></script>
-  <script
-  src="https://code.jquery.com/jquery-3.5.1.min.js"
-  integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
-  crossorigin="anonymous"></script>
+
 
   <h1>WAV File Info: {{ filename }}</h1>
   {% if wav_info %}
@@ -15,20 +11,40 @@
     <p>Bit Depth: {{wav_info["Bit Depth"]}}</p>
     <p>bext Chunk: {{wav_info["bext chunk"]}}</p>
   {% endif%}
-  <button type="button" class="btn btn-large btn-info" id="showWaveBtn" onclick="showWave();">Render Waveform</button>
-  <div class="input-group mb-3">
-    <input type="text" class="form-control" placeholder="{'0+5+0': [1, 2, 3, 4, 5, 6], '0+2+0': [7, 8]}" aria-label="adm_config" aria-describedby="basic-addon2" id="adm_config_input">
-    <div class="input-group-append">
-      <button class="btn btn-outline-secondary" type="button" onclick="generateBW64File();">Create BW64</button>
-    </div>
-      <a class="btn btn-warning disabled" type="button" id="downloadBtn" href="#">Download BW64</a>
+
+  <div class="row">
+    <div class="col-md4">
+      <button type="button" class="btn btn-large btn-info" id="showWaveBtn" onclick="showWave();">Render Waveform</button>
+    <div>
   </div>
+
+  <div class="row">
+    <div class="col-md4">
+      <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+          Add DirectSpeakers configuration
+        </button>
+        <ul class="dropdown-menu" id="dropdown" aria-labelledby="dropdownMenuButton1">
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" id="ADMConfigViews">
+  </div>
+
+  <button class="btn btn-success" type="button" onclick="generateBW64File();">Create BW64</button>
+
+  <a class="btn btn-warning disabled" type="button" id="downloadBtn" href="#">Download BW64</a>
+
   <div id="waveform"></div>
+
   <script>
     var wavesurfer;
     let waveFormRendered = false;
     const CHANNELS = {{ wav_info["Channels"] }};
     let gainNodes = [];
+    let admConfigs = {};
 
     const LAYOUTS = {"mono (0+1+0)": 1,
                      "stereo (0+2+0)": 2,
@@ -141,6 +157,58 @@
       return routing_pairs;
     }
 
+    function makeADMConfig(){
+      let adm = {};
+      for (const [id, obj] of Object.entries(admConfigs)){
+        adm[obj["layout"]] = obj["routing"];
+      }
+      return adm;
+    }
+
+    function _addADMConfigView(sys){
+      const id = ID();
+      admConfigs[id] = {"layout": sys, routing: false};
+      $("#ADMConfigViews").append(
+        `<div class="input-group mb-3">
+          <label class="input-group-text" for="inputGroupSelect01">`+sys+`</label>
+          <select class="form-select" id="`+id+`">
+            <option selected>Choose Routing</option>
+          </select>
+          <div class="input-group-append">
+            <button class="btn btn-danger" type="button" onclick="_removeADMConfig('`+id+`')">Delete</button>
+          </div>
+        </div>`
+      );
+      for (let pair of valid_routings[sys]){
+        pairStr = String(pair[0] + "-" + pair[1]);
+        $("#"+id).append('<option value="'+pair+'">'+pairStr+'</option>')
+      }
+    }
+
+    function _removeADMConfig(id){
+      delete admConfigs[id];
+      $("#"+id).parent()[0].remove();
+    }
+
+    function ID(){
+      // Math.random should be unique because of its seeding algorithm.
+      // Convert it to base 36 (numbers + letters), and grab the first 9 characters
+      // after the decimal.
+      return Math.random().toString(36).substr(2, 9);
+    }
+
+    let valid_routings = getValidRoutings();
+
+    $( document ).ready(function() {
+      $.each(valid_routings, function(key, entry) {
+        $("#dropdown").append( $('<li><a class="dropdown-item" href="#">'+key+'</a></li>')
+        .attr('value', key)
+        .click(function() {
+            _addADMConfigView(this.innerText);
+          })
+        );
+      });
+    });
 
   </script>
 {% endblock %}
