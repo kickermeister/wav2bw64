@@ -210,6 +210,11 @@
       return Array.from({length:max-min+1},(v,k)=>k+min);
     }
 
+    function showModal(text){
+      $("#myModalText").text(text)
+      $("#myModal").modal("show");
+    }
+
     let valid_routings = getValidRoutings();
 
     $( document ).ready(function() {
