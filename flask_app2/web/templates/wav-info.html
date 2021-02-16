@@ -21,7 +21,7 @@
   <div class="row">
     <div class="col-md4">
       <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Add DirectSpeakers configuration
         </button>
         <ul class="dropdown-menu" id="dropdown" aria-labelledby="dropdownMenuButton1">
@@ -170,8 +170,10 @@
       admConfigs[id] = {"layout": sys, routing: false};
       $("#ADMConfigViews").append(
         `<div class="input-group mb-3">
-          <label class="input-group-text" for="inputGroupSelect01">`+sys+`</label>
-          <select class="form-select" id="`+id+`">
+          <div class="input-group-prepend">
+            <label class="input-group-text" for="inputGroupSelect01">`+sys+`</label>
+          </div>
+          <select class="custom-select" id="`+id+`">
             <option selected>Choose Routing</option>
           </select>
           <div class="input-group-append">
