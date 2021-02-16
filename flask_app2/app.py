@@ -44,7 +44,6 @@ def upload_file():
 def show_wav_info(filename):
     path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     wav_info = get_wav_info(path)
-    bs2051_layouts = bs2051.layout_names
     if wav_info["Channels"] > 8:
         flash('Supporting only WAV files with up to 8 channels')
         return redirect("/")
@@ -57,8 +56,7 @@ def show_wav_info(filename):
                                path=path,
                                jsonpath=jsonpath,
                                filename=filename,
-                               wav_info=wav_info,
-                               bs2051_layouts=bs2051_layouts)
+                               wav_info=wav_info)
 
 
 @app.route('/uploads/<filename>')
