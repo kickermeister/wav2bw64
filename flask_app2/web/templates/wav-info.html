@@ -3,23 +3,26 @@
 {% block body %}
   <script src="https://unpkg.com/wavesurfer.js"></script>
 
-
-  <h1>WAV File Info: {{ filename }}</h1>
-  {% if wav_info %}
-    <p>Channels: {{wav_info["Channels"]}}</p>
-    <p>File Format: {{wav_info["File Format"]}}</p>
-    <p>Bit Depth: {{wav_info["Bit Depth"]}}</p>
-    <p>bext Chunk: {{wav_info["bext chunk"]}}</p>
-  {% endif%}
-
   <div class="row">
-    <div class="col-md4">
-      <button type="button" class="btn btn-large btn-info" id="showWaveBtn" onclick="showWave();">Render Waveform</button>
-    <div>
+    <div class="col-md-12">
+      <h1>WAV File Info: {{ filename }}</h1>
+      {% if wav_info %}
+        <p>Channels: {{wav_info["Channels"]}}</p>
+        <p>File Format: {{wav_info["File Format"]}}</p>
+        <p>Bit Depth: {{wav_info["Bit Depth"]}}</p>
+        <p>bext Chunk: {{wav_info["bext chunk"]}}</p>
+      {% endif%}
+    </div>
   </div>
 
   <div class="row">
-    <div class="col-md4">
+    <div class="col-md-4">
+      <button type="button" class="btn btn-large btn-info" id="showWaveBtn" onclick="showWave();">Render Waveform</button>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-md-12">
       <div class="dropdown">
         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Add DirectSpeakers configuration
@@ -30,7 +33,9 @@
     </div>
   </div>
 
-  <div class="row" id="ADMConfigViews">
+  <div class="row mt-4">
+    <div class="col-md-12" id="ADMConfigViews">
+    </div>
   </div>
 
   <button class="btn btn-success disabled" type="button" id="createBW64Btn">Create BW64</button>
