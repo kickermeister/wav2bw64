@@ -50,6 +50,9 @@
     var wavesurfer;
     let waveFormRendered = false;
     const CHANNELS = {{ wav_info["Channels"] }};
+    const PATH = "{{ path }}";
+    const FILENAME = "{{ filename }}";
+    var jsonpath;
     let gainNodes = [];
     let admConfigs = {};
 
@@ -71,6 +74,18 @@
 
     function showWave(){
       if (waveFormRendered === false){
+        $.post('/render_waveform', {
+          filename: FILENAME
+        }).done(function(data){
+          jsonpath = data.jsonpath;
+          console.debug("Got jsonpath: " + jsonpath);
+          _fetchWaveformData(jsonpath);
+          waveFormRendered = true;
+        }).fail(function(message){
+          showModal(message.responseText);
+          console.debug("BW64 File failed: ", message.responseText);
+        });
+
         wavesurfer = WaveSurfer.create({
           container: '#waveform',
           backend: 'MediaElementWebAudio',
@@ -82,24 +97,27 @@
           partialRender: true,
           splitChannels: true
         });
-        fetch('/' + '{{ jsonpath }}')
-        .then(response => {
-          if (!response.ok) {
-              throw new Error("HTTP error " + response.status);
-          }
-          return response.json();
-        })
-        .then(peaks => {
-          console.log('loaded peaks! sample_rate: ' + peaks.sample_rate);
-          // load peaks into wavesurfer.js
-          wavesurfer.load("/" + "{{ path }}", peaks.data);
-          initSoloNodes();
-        })
-        .catch((e) => {
-          console.error('error', e);
-        });
-        waveFormRendered = true;
       }
+    }
+
+    function _fetchWaveformData(path){
+      fetch('/' + path)
+      .then(response => {
+        if (!response.ok) {
+            throw new Error("HTTP error " + response.status);
+        }
+        //console.debug(response.json());
+        return response.json();
+      })
+      .then(peaks => {
+        console.log('loaded peaks! sample_rate: ' + peaks.sample_rate);
+        // load peaks into wavesurfer.js
+        wavesurfer.load("/" + PATH, peaks.data);
+        initSoloNodes();
+      })
+      .catch((e) => {
+        console.error('error', e);
+      });
     }
 
     function initSoloNodes(){
@@ -114,14 +132,14 @@
     }
 
     function generateBW64File(){
-      var in_path = "{{ path }}";
-      var out_path = in_path.substr(0, in_path.lastIndexOf(".")) + "_bw64.wav";
+      var out_path = PATH.substr(0, PATH.lastIndexOf(".")) + "_bw64.wav";
       var adm_config = {};
+      // FIXME: does not support same layout multiple times!
       for (const [id, obj] of Object.entries(admConfigs)){
         adm_config[obj['layout']] = obj["routing"];
       }
       $.post("/set_bw64_config", {
-        in_wav_path: in_path,
+        in_wav_path: PATH,
         out_bwav_path: out_path,
         adm_dict: JSON.stringify(adm_config)
       }).done(function(response){
