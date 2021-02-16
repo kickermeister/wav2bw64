@@ -109,8 +109,10 @@
     function generateBW64File(){
       var in_path = "{{ path }}";
       var out_path = in_path.substr(0, in_path.lastIndexOf(".")) + "_bw64.wav";
-      //var adm_config = $('#adm_config_input').val();
-      var adm_config = {'0+5+0': [1, 2, 3, 4, 5, 6], '0+2+0': [7, 8]};
+      var adm_config = {};
+      for (const [id, obj] of Object.entries(admConfigs)){
+        adm_config[obj['layout']] = obj["routing"];
+      }
       $.post("/set_bw64_config", {
         in_wav_path: in_path,
         out_bwav_path: out_path,
@@ -185,6 +187,11 @@
         pairStr = String(pair[0] + "-" + pair[1]);
         $("#"+id).append('<option value="'+pair+'">'+pairStr+'</option>')
       }
+      $('#'+id).on('change', function() {
+        let min = Number(this.value.split(",")[0]);
+        let max = Number(this.value.split(",")[1]);
+        admConfigs[id]["routing"] = _arange(min, max);
+      });
     }
 
     function _removeADMConfig(id){
@@ -197,6 +204,10 @@
       // Convert it to base 36 (numbers + letters), and grab the first 9 characters
       // after the decimal.
       return Math.random().toString(36).substr(2, 9);
+    }
+
+    function _arange(min, max){
+      return Array.from({length:max-min+1},(v,k)=>k+min);
     }
 
     let valid_routings = getValidRoutings();
