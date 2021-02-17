@@ -28,20 +28,21 @@ def get_wav_info(path):
 def generate_adm(adm_dict, bitDepth=16, sampleRate=48000):
     builder = ExtendedADMBuilder()
     builder.load_common_definitions()
-    for system, channels in adm_dict.items():
-        builder.create_programme(audioProgrammeName=system)
+    for ap_name, conf in adm_dict.items():
+        builder.create_programme(audioProgrammeName=ap_name)
         builder.create_content(audioContentName="Content")
-        builder.create_multichannel_item(TypeDefinition.DirectSpeakers,
-                                         name=system,
-                                         system=system,
-                                         bitDepth=bitDepth,
-                                         sampleRate=sampleRate,
-                                         track_idxs=channels)
+        for system, channels in conf.items():
+            builder.create_multichannel_item(TypeDefinition.DirectSpeakers,
+                                             name=system,
+                                             system=system,
+                                             bitDepth=bitDepth,
+                                             sampleRate=sampleRate,
+                                             track_idxs=channels)
     return builder.adm
 
 
 def generate_bw64_file(in_wav_path, out_bwav_path, adm_dict, screen=None):
-    # adm = generate_adm({'0+5+0': [1, 2, 3, 4, 5, 6], '0+2+0': [7, 8]})
+    # adm_dict = {'AP1': {'0+5+0': [1, 2, 3, 4, 5, 6], '0+2+0': [7, 8]}, 'AP2': {'0+2+0': [1, 2]}}
     wav_info = get_wav_info(in_wav_path)
     highest_nr = _find_highest_channel_number(adm_dict)
     if wav_info["Channels"] < highest_nr:
@@ -76,8 +77,9 @@ def generate_bw64_file(in_wav_path, out_bwav_path, adm_dict, screen=None):
 
 def _find_highest_channel_number(adm_dict):
     max_values = []
-    for sys, channels in adm_dict.items():
-        max_values.append(max(channels))
+    for ap, conf in adm_dict.items():
+        for sys, channels in conf.items():
+            max_values.append(max(channels))
     return max(max_values)
 
 
