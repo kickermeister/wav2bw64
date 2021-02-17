@@ -57,18 +57,18 @@
     let gainNodes = [];
     let admConfigs = {};
 
-    const LAYOUTS = {"mono (0+1+0)": 1,
-                     "stereo (0+2+0)": 2,
-                     "5.1 (0+5+0)": 6,
-                     "5.1+2H (2+5+0)": 8,
-                     "5.1+4H (4+5+0)": 10,
-                     "(4+5+1)": 11,
-                     "7.2+3H (3+7+0)": 12,
-                     "9.1+4H (4+9+0)": 14,
-                     "22.2 (9+10+3)": 24,
-                     "7.1 (0+7+0)": 8,
-                     "7.1+4H (4+7+0)": 12,
-                     "7.1+2H (2+7+0)": 10};
+    const LAYOUTS = {"mono / 0+1+0": 1,
+                     "stereo / 0+2+0": 2,
+                     "5.1 / 0+5+0": 6,
+                     "5.1+2H / 2+5+0": 8,
+                     "5.1+4H / 4+5+0": 10,
+                     "7.2+3H / 3+7+0": 12,
+                     "9.1+4H / 4+9+0": 14,
+                     "22.2 / 9+10+3": 24,
+                     "7.1 / 0+7+0": 8,
+                     "7.1+4H / 4+7+0": 12,
+                     "7.1+2H / 2+7+0": 10};
+                     // enabling other layouts as defined in ITU-R BS.2051 would require changes in EAR-based backend due to lookup of layout name in ear.core.bs2051.get_layout()
                      //"3.0 (0+3+0)": 3,
                      //"5.0 (0+5+0)": 5};
 
@@ -193,9 +193,9 @@
       return adm;
     }
 
-    function _addADMConfigView(sys){
+    function _addADMConfigView(sys, sys_bs2051){
       const id = ID();
-      admConfigs[id] = {"layout": sys, routing: false};
+      admConfigs[id] = {"layout": sys_bs2051, routing: false};
       $("#ADMConfigViews").append(
         `<div class="input-group mb-3">
           <div class="input-group-prepend">
@@ -251,10 +251,13 @@
 
     $( document ).ready(function() {
       $.each(valid_routings, function(key, entry) {
+        let bs2051_layout = key.split(" / ")[1];
         $("#dropdown").append( $('<li><a class="dropdown-item" href="#">'+key+'</a></li>')
-        .attr('value', key)
+        .attr('value', bs2051_layout)
         .click(function() {
-            _addADMConfigView(this.innerText);
+            console.debug("ADM Layout selected value: " + $(this).attr("value"));
+            console.debug("ADM Layout selected name: ", $(this)[0].innerText);
+            _addADMConfigView($(this)[0].innerText, $(this).attr("value"));
           })
         );
       });
