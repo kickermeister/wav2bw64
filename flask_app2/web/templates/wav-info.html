@@ -49,6 +49,7 @@
   <script>
     var wavesurfer;
     let waveFormRendered = false;
+    let createBw64Enabled = false;
     const CHANNELS = {{ wav_info["Channels"] }};
     const PATH = "{{ path }}";
     const FILENAME = "{{ filename }}";
@@ -217,10 +218,12 @@
         let max = Number(this.value.split(",")[1]);
         admConfigs[id]["routing"] = _arange(min, max);
 
-        // this could be certainly done more bulletproof / elegantly
-        $("#createBW64Btn").removeClass("disabled").click(function(){
-          generateBW64File();
-        });
+        if (createBw64Enabled === false){
+          $("#createBW64Btn").removeClass("disabled").click(function(){
+            generateBW64File();
+          });
+          createBw64Enabled = true;
+        }
       });
     }
 
