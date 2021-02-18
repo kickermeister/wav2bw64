@@ -1,5 +1,6 @@
 from attr import attrib, attrs
 # import ruamel.yaml
+import logging
 import lxml.etree
 from ear.core import bs2051
 from ear.fileio import openBw64
@@ -46,7 +47,7 @@ def generate_bw64_file(in_wav_path, out_bwav_path, adm_dict, screen=None):
     wav_info = get_wav_info(in_wav_path)
     highest_nr = _find_highest_channel_number(adm_dict)
     if wav_info["Channels"] < highest_nr:
-        print("ERROR: File has only %s channels but %s are defined in ADM metadata! Aborting." % (wav_info["Channels"], highest_nr))
+        logging.error("ERROR: File has only %s channels but %s are defined in ADM metadata! Aborting." % (wav_info["Channels"], highest_nr))
         return False
     adm = generate_adm(adm_dict)
     if screen is not None:
@@ -106,10 +107,10 @@ class ExtendedADMBuilder(ADMBuilder):
 
         '''works for 0+2+0 and 0+5+0, needs a function for matching bs2051 with common definitions'''
         pack_format = [x for x in self.adm._apf if x.id == audioPackFormatLookupTable[system]][0]
-        print("Detected Pack Format: %s", pack_format, "\n")
+        logging.debug("Detected Pack Format: %s", pack_format)
 
         requiredstreamformats = [audioStreamFormatLookupTable[x] for x in layout.channel_names]
-        # print("Required stream formats: ", requiredstreamformats)
+        logging.debug("Required stream formats: %s", requiredstreamformats)
         # stream_format = [x for x in self.adm._asf if x.id in requiredstreamformats]
         stream_format = []
         for id in requiredstreamformats:
@@ -120,7 +121,7 @@ class ExtendedADMBuilder(ADMBuilder):
         # print("Detected Stream Format: %s", stream_format, "\n")
 
         requiredtrackformats = [audioTrackFormatLookupTable[x] for x in layout.channel_names]
-        # print("Required track formats: ", requiredtrackformats)
+        logging.debug("Required track formats: %s", requiredtrackformats)
         # track_format = [x for x in self.adm._atf if x.id in requiredtrackformats]
         track_format = []
         for id in requiredtrackformats:
