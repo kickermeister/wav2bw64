@@ -2,6 +2,7 @@ from attr import attrib, attrs
 import logging
 import ruamel.yaml
 import lxml.etree
+from wavinfo import WavInfoReader as wavreader
 from ear.core import bs2051
 from ear.fileio import openBw64
 from ear.fileio.adm.builder import ADMBuilder
@@ -19,11 +20,9 @@ DEFAULT = object()
 
 
 def get_wav_info(path):
-    with openBw64(path) as bw64:
-        return {"Channels": bw64.channels,
-                "File Format": bw64.fileFormat,
-                "Bit Depth": bw64.bitdepth,
-                "bext chunk": bw64.bext}
+    wavinfo = wavreader(path)
+    return {"Channels": wavinfo.fmt.channel_count,
+            "bext chunk": wavinfo.bext.to_dict()}
 
 def load_adm_yaml_file(filename):
     with open(filename) as f:
