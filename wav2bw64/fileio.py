@@ -1,6 +1,6 @@
 from attr import attrib, attrs
-# import ruamel.yaml
 import logging
+import ruamel.yaml
 import lxml.etree
 from ear.core import bs2051
 from ear.fileio import openBw64
@@ -25,6 +25,10 @@ def get_wav_info(path):
                 "Bit Depth": bw64.bitdepth,
                 "bext chunk": bw64.bext}
 
+def load_adm_yaml_file(filename):
+    with open(filename) as f:
+        yaml = ruamel.yaml.safe_load(f)
+    return yaml
 
 def generate_adm(adm_dict, bitDepth=16, sampleRate=48000):
     builder = ExtendedADMBuilder()
