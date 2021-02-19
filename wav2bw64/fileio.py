@@ -21,8 +21,11 @@ DEFAULT = object()
 
 def get_wav_info(path):
     wavinfo = wavreader(path)
-    return {"Channels": wavinfo.fmt.channel_count,
-            "bext chunk": wavinfo.bext.to_dict()}
+    info = {"Channels": wavinfo.fmt.channel_count}
+    if wavinfo.bext is not None:
+        info["bext chunk"] = wavinfo.bext.to_dict()
+    return info
+
 
 def load_adm_yaml_file(filename):
     with open(filename) as f:
