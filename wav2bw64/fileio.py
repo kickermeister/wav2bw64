@@ -12,8 +12,8 @@ from ear.fileio.adm.generate_ids import generate_ids
 from ear.fileio.adm.xml import adm_to_xml
 from ear.fileio.bw64.chunks import ChnaChunk, FormatInfoChunk
 from .commondefinitions import (audioPackFormatLookupTable,
-                                audioStreamFormatLookupTable,
-                                audioTrackFormatLookupTable)
+                               audioStreamFormatLookupTable,
+                               audioTrackFormatLookupTable)
 
 
 DEFAULT = object()
