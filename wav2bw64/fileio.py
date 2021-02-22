@@ -50,6 +50,9 @@ def generate_adm(adm_dict, bitDepth=16, sampleRate=48000):
 
 def generate_bw64_file(in_wav_path, out_bwav_path, adm_dict, screen=None):
     # adm_dict = {'AP1': {'0+5+0': [1, 2, 3, 4, 5, 6], '0+2+0': [7, 8]}, 'AP2': {'0+2+0': [1, 2]}}
+    if in_wav_path == out_bwav_path:
+        logging.error("Outfile must be different from infile!")
+        return False
     wav_info = get_wav_info(in_wav_path)
     highest_nr = _find_highest_channel_number(adm_dict)
     if wav_info["Channels"] < highest_nr:
