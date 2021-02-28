@@ -1,5 +1,7 @@
 <script>
   import { Tabs, Tab, TabContent } from 'svelte-materialify';
+  import { ADMStore } from '../stores.js';
+  import Routing from './Routing.svelte';
   
   export let activeItem;
   let activeItemSettings = 0;
@@ -17,7 +19,23 @@
     {#each tabs as tab}
       <TabContent>
         <div>
-          <h4>{tab}</h4>
+          {#if tab === "Routing"}
+            <Routing activeItem={activeItem}/>
+            {activeItem.type}
+            {activeItem.routing}  
+            <h4>Routing</h4>
+            <!-- <h4>Bla</h4>
+            <h4>Bla</h4>
+            <h4>Bla</h4>
+            <h4>Bla</h4>
+            <h4>Bla</h4> -->
+          {:else if tab === "Interactivity"}
+            <h4>Interactivity</h4>
+          {:else if tab === "Importance"}
+            <h4>Importance</h4>
+          {:else if tab === "Loudness"}
+            <h4>Loudness</h4>
+          {/if}
         </div>
       </TabContent>
     {/each}

@@ -19,22 +19,25 @@ function Store() {
         name: "Audio Programme 1",
         loudness: -23,
         items: [
-          {type: "Object", routing: 1},
+          {type: "Object", routing: [1]},
           {type: "0+2+0", routing: [1, 2]},
         ],
-        language: 'Deutsch'
+        language: 'DE'
       },
       {
         id: 1,
         name: "Audio Programme 2",
         loudness: -23,
         items: [
-          {type: "0+5+0", routing: [1, 6]},
+          {type: "0+5+0", routing: [1, 2, 3, 4, 5, 6]},
           {type: "0+2+0", routing: [1, 2]},
-          {type: "Object", routing: [1, 6]},
-          {type: "Object", routing: [1, 2]}
+          {type: "Object", routing: [7]},
+          {type: "Object", routing: [8]}, 
+          {type: "0+7+0", routing: [1, 2, 3, 4, 5, 6, 7, 8]},
+          {type: "Object", routing: [8]},
+          {type: "0+2+0", routing: [1, 2]} 
         ],
-        language: 'Deutsch'
+        language: 'EN'
       },
     ]
   );
