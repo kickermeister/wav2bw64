@@ -10,14 +10,22 @@
   let activeItem = 0;
 
   const languages = mapISO6391();
+  const audioBlockItems = getValidLayouts(8);
 
-  const audioBlockItems = [
-    { name: 'Object', value: 'Object' },
-    { name: '0+2+0', value: '0+2+0' },
-    { name: '0+5+0', value: '0+5+0' },
-  ];
-  // const audioBlockItems = getValidLayouts(8);
+  let selectedAudioBlockItem = "Add Item";
 
+  const handleAudioBlockItemSeleced = (e) => {
+    if (e.detail !== undefined && typeof(e.detail) === "string" && e.detail !== "Add Item"){
+      ADMStore.update(adm => {
+        let ap = adm.find(ap => ap.id === activeAP.id);
+        ap.items.push({type: selectedAudioBlockItem, routing: []});
+        return adm;
+      })
+      // activeAP.items.push({type: e.detail, routing: []}); // this seems to store the new object but the list is not updated in this component.
+      // Otherwise, the Select component would always display the selected value which would be odd in our case
+      selectedAudioBlockItem = "Add Item";
+    }
+  };
 
 </script>
 
@@ -42,7 +50,7 @@
   </Row>
 
   <Row>
-    <Select solo items={audioBlockItems}>Add Item</Select>
+    <Select solo items={audioBlockItems} placeholder="Add Item" bind:value={selectedAudioBlockItem} on:change={handleAudioBlockItemSeleced}></Select>
   </Row>
   <Row>
     <Col cols={12} sm={3} md={3}>
