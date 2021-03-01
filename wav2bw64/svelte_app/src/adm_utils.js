@@ -36,10 +36,10 @@ export function getLayoutRoutingPairs(layout, wav_channels){
 
 
 export function getValidLayouts(wav_channels){
-  let valid_layouts = {};
+  let valid_layouts = [];
   for (const sys of LAYOUTS){
       if (sys.channels <= wav_channels){
-        valid_layouts[sys.value] = sys.channels;
+        valid_layouts.push({name: sys.name, value: sys.value, channels: sys.channels});
       }
   }
   return valid_layouts;
@@ -47,9 +47,9 @@ export function getValidLayouts(wav_channels){
 
  export function getValidRoutings(wav_channels){
   let valid_layouts = getValidLayouts(wav_channels);
-  let valid_routings = {};
-  for (const [sys, chs] of Object.entries(valid_layouts)){
-      valid_routings[sys] = getValidRoutingPair(chs, wav_channels);
+  let valid_routings = [];
+  for (const layout of valid_layouts){
+      valid_routings.push({name: layout.value, routings: getValidRoutingPair(layout.channels, wav_channels)});
   }
   return valid_routings;
  }
