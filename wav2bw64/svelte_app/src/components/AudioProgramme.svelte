@@ -1,4 +1,5 @@
 <script>
+  import ISO6391 from 'iso-639-1';
   import { ADMStore } from '../stores.js';
   import AudioObject from './AudioObject.svelte'
   import { Select, Container, Row, Col, TextField, ListItemGroup, ListItem, ExpansionPanels, ExpansionPanel, } from 'svelte-materialify/src';
@@ -8,11 +9,22 @@
 
   let activeItem = 0;
 
-  const languages = [
-    { name: 'DE', value: 'DE' },
-    { name: 'FR', value: 'FR' },
-    { name: 'EN', value: 'EN' },
-  ];
+  function mapISO6391(){
+    let languages = [];
+    let names = ISO6391.getAllNames();
+    for (const name of names){
+      languages.push({value: ISO6391.getCode(name), name: name});
+    }
+    languages.sort(function(a, b){
+      if(a.name < b.name) { return -1; }
+      if(a.name > b.name) { return 1; }
+      return 0;
+    });
+    // console.log("ISO639 mapped!", languages);
+    return languages;
+  }
+
+  const languages = mapISO6391();
 
   const audioBlockItems = [
     { name: 'Object', value: 'Object' },
