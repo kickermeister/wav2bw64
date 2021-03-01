@@ -28,7 +28,7 @@
                 <Icon class="ml-16" on:click={handleDeleteAP} path={mdiDeleteForever} />
             </Tab>
           {/each}
-            <Button on:click={handleAddAP} class="s-btn size-default primary-color">+</Button>
+            <Button on:click={handleAddAP} size="large" class="primary-color float-right">+</Button>
         </div>
         {#each $ADMStore as ap (ap.id)} 
           <TabContent>
