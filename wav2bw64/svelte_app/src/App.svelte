@@ -32,7 +32,7 @@
         </div>
         {#each $ADMStore as ap (ap.id)} 
           <TabContent>
-            <AudioProgramme audioProgrammeID={ap.id} />
+            <AudioProgramme bind:activeAP={ap} />
           </TabContent>
         {/each}
         

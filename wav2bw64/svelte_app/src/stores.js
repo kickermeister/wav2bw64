@@ -45,6 +45,7 @@ function Store() {
   return {
     subscribe,
     update,
+    set,
     addAP: () => update(adm => {
       return [...adm, getAudioProgrammeStructure()];
     })

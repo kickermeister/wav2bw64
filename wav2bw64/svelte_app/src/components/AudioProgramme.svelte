@@ -4,11 +4,7 @@
   import { Select, Container, Row, Col, TextField, ListItemGroup, ListItem, ExpansionPanels, ExpansionPanel, } from 'svelte-materialify/src';
   import { getValidLayouts } from '../adm_utils.js';
 
-
-  export let audioProgrammeID;
-  $: activeAP = $ADMStore.filter(obj => {
-    return obj.id === audioProgrammeID
-  })[0];
+  export let activeAP;
 
   let activeItem = 0;
 
@@ -25,14 +21,6 @@
   ];
   // const audioBlockItems = getValidLayouts(8);
 
-  const saveAPName = (e) => {
-    // console.log(e.target.value);
-    // console.log("ADMStore from AudioProgramme component:", $ADMStore);
-    // ADMStore.update(adm => {
-    //   adm[0].name = e.target.value;
-    //   return adm;
-    // });
-  }
 
 </script>
 
@@ -40,7 +28,7 @@
   <Container>
   <Row>
     <Col cols={4}>
-      <TextField dense outlined bind:value={ activeAP.name } on:change={saveAPName}>Name</TextField>
+      <TextField dense outlined bind:value={activeAP.name}>Name</TextField>
     </Col>
     <Col cols={4} offset={4}>
       <Select solo items={languages} bind:value={activeAP.language} class="darken-1">Language</Select>
