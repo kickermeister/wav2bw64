@@ -2,7 +2,7 @@
 <script>
 	import AudioProgramme from './components/AudioProgramme.svelte';
 	import { ADMStore } from './stores.js';
-  import { MaterialApp, Tabs, Tab, TabContent, Button, Icon } from 'svelte-materialify';
+  import { MaterialApp, Tabs, Tab, TabContent, Button, Icon } from 'svelte-materialify/src';
   import { mdiDeleteForever } from '@mdi/js';
 	
   const handleDeleteAP = (e) => {

@@ -1,6 +1,6 @@
 <script>
   import { ADMStore } from '../stores.js';
-  import { Select, Container, Row, Col } from 'svelte-materialify';
+  import { Select, Container, Row, Col } from 'svelte-materialify/src';
   import { getLayoutRoutingPairs } from '../adm_utils.js';
 
   export let activeItem;

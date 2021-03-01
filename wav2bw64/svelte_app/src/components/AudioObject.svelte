@@ -1,5 +1,5 @@
 <script>
-  import { Tabs, Tab, TabContent } from 'svelte-materialify';
+  import { Tabs, Tab, TabContent } from 'svelte-materialify/src';
   import { ADMStore } from '../stores.js';
   import Routing from './Routing.svelte';
   
