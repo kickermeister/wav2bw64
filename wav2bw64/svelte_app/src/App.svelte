@@ -14,6 +14,10 @@
     ADMStore.addAP();
   }
 
+  const logStore = () => {
+    console.log($ADMStore);
+  }
+
 </script>
   
   
@@ -39,6 +43,8 @@
       </Tabs>
     </div>
   </MaterialApp>
+
+  <Button on:click={logStore}>Log Store to Console</Button>
  </main>
   
 
