@@ -15,10 +15,21 @@ export const LAYOUTS = [
   {name: "Binaural" , value: "Binaural", channels: 2}
 ];
 
+export function getDisplayedNameFromRange(array){
+  return String(array[0]) + " - " + String(array[array.length -1]);
+}
 
+export function getRangeFromDisplayedName(str){
+  let min = parseInt(str.split(" - ")[0]);
+  let max = parseInt(str.split(" - ")[1]);
+  return getRangeFromMinMax(min, max);
+}
 
+export function getMinMaxFromRange(array){
+  return [array[0], array[array.length -1]];
+}
 
-export function _arange(min, max){
+export function getRangeFromMinMax(min, max){
   return Array.from({length:max-min+1},(v,k)=>k+min);
 }
 
