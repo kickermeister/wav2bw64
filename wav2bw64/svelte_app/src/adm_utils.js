@@ -60,9 +60,9 @@ export function getValidLayouts(wav_channels){
       // axml / chna track index starts with 1
       let upper = 1 + ch + sys_chs - 1;
       if (upper <= wav_channels){
-        let range_val = [1 + ch, upper];
+        //let range_val = [1 + ch, upper];
         let range_name = String(1 + ch) + " - " + String(upper);
-        routing_pairs.push({name: range_name, value: range_val});
+        routing_pairs.push({name: range_name, value: range_name});
       } else {
       break;
       }
