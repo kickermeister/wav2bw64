@@ -5,7 +5,7 @@
   
   export let activeItem;
   let activeItemSettings = 0;
-  let tabs = ["Routing", "Interactivity", "Importance", "Loudness"];
+  let tabs = ["Routing", "Interactivity", "Importance"];
 </script>
 
 <div class="eps-area audioObjectArea">
@@ -33,8 +33,6 @@
             <h4>Interactivity</h4>
           {:else if tab === "Importance"}
             <h4>Importance</h4>
-          {:else if tab === "Loudness"}
-            <h4>Loudness</h4>
           {/if}
         </div>
       </TabContent>
