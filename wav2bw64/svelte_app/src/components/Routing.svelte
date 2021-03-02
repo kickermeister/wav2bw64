@@ -1,23 +1,11 @@
 <script>
   import { ADMStore } from '../stores.js';
   import { Select, Container, Row, Col } from 'svelte-materialify/src';
-  import { getLayoutRoutingPairs, getDisplayedNameFromRange, getRangeFromDisplayedName } from '../adm_utils.js';
+  import { getLayoutRoutingPairs } from '../adm_utils.js';
 
-  export let activeAP;
   export let activeItem;
   const wav_channels = 16;  //FIXME: DUMMY VALUE
   $: routings = getLayoutRoutingPairs(activeItem.type, wav_channels);
-  // $: routingValue = ;
-  // $: selectedRouting = getDisplayedNameFromRange(activeItem.routing);
-  // $: {
-  //   ADMStore.update(adm => {
-  //     let ap = adm.find(ap => ap.id === activeAP.id);
-  //     let item = ap.items.find(item => item.id === activeItem.id);
-  //     item.routing = getRangeFromDisplayedName(selectedRouting);
-  //     return adm;
-  //   });
-  //   console.log("Routing selected");
-  // }
 
 </script>
 
