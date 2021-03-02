@@ -19,8 +19,8 @@ function Store() {
         name: "Audio Programme 1",
         loudness: -23,
         items: [
-          {id: 0, type: "Object", routing: "1 - 1"},
-          {id: 1, type: "0+2+0", routing: "1 - 2"},
+          {id: 0, name: "My Object 1" , type: "Object", routing: "1 - 1"},
+          {id: 1, name: "Stereo Bed", type: "0+2+0", routing: "1 - 2"},
         ],
         language: 'de'
       },
@@ -29,13 +29,13 @@ function Store() {
         name: "Audio Programme 2",
         loudness: -23,
         items: [
-          {id: 0, type: "0+5+0", routing: "1 - 6"},
-          {id: 1, type: "0+2+0", routing: "1 - 2"},
-          {id: 2, type: "Object", routing: "7 - 7"},
-          {id: 3, type: "Object", routing: "8 - 8"}, 
-          {id: 4, type: "0+7+0", routing: "1 - 8"},
-          {id: 5, type: "Object", routing: "8 - 8"},
-          {id: 6, type: "0+2+0", routing: "1 - 2"} 
+          {id: 0, name: "Surround Bed", type: "0+5+0", routing: "1 - 6"},
+          {id: 1, name: "Music", type: "0+2+0", routing: "1 - 2"},
+          {id: 2, name: "Dialog", type: "Object", routing: "7 - 7"},
+          {id: 3, name: "Commentary", type: "Object", routing: "8 - 8"}, 
+          {id: 4, name: "7.1 Bed", type: "0+7+0", routing: "1 - 8"},
+          {id: 5, name: "Effect", type: "Object", routing: "8 - 8"},
+          {id: 6, name: "Music Bed 2", type: "0+2+0", routing: "1 - 2"} 
         ],
         language: 'en'
       },
