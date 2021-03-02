@@ -1,23 +1,35 @@
 <script>
   import { ADMStore } from '../stores.js';
   import { Select, Container, Row, Col } from 'svelte-materialify/src';
-  import { getLayoutRoutingPairs } from '../adm_utils.js';
+  import { getLayoutRoutingPairs, getDisplayedNameFromRange, getRangeFromDisplayedName } from '../adm_utils.js';
 
+  export let activeAP;
   export let activeItem;
-  const wav_channels = 8;  //FIXME: DUMMY VALUE
+  const wav_channels = 16;  //FIXME: DUMMY VALUE
   $: routings = getLayoutRoutingPairs(activeItem.type, wav_channels);
+  // $: routingValue = ;
+  // $: selectedRouting = getDisplayedNameFromRange(activeItem.routing);
+  // $: {
+  //   ADMStore.update(adm => {
+  //     let ap = adm.find(ap => ap.id === activeAP.id);
+  //     let item = ap.items.find(item => item.id === activeItem.id);
+  //     item.routing = getRangeFromDisplayedName(selectedRouting);
+  //     return adm;
+  //   });
+  //   console.log("Routing selected");
+  // }
 
 </script>
 
 <div class="routing">
   <Container>
   <Row>
-    <Col>  
+    <Col cols={12} sm={9} md={9}>  
       Select channel routing for item:
     </Col>
-    <Col>
+    <Col cols={12} sm={3} md={3}>
       <div class="routing-select">
-        <Select items={routings} placeholder="Routing" />
+        <Select solo items={routings} placeholder="Routing" bind:value={activeItem.routing} />
       </div>
     </Col>
   </Row>
@@ -30,6 +42,6 @@
   }
 
   .routing-select {
-    height: 200px;
+    height: 400px;
   }
 </style>
