@@ -1,7 +1,8 @@
 <script>
   import { ADMStore } from '../stores.js';
   import AudioObject from './AudioObject.svelte'
-  import { Select, Container, Row, Col, TextField, ListItemGroup, ListItem, ExpansionPanels, ExpansionPanel } from 'svelte-materialify/src';
+  import { Select, Container, Row, Col, TextField, ListItemGroup, ListItem, ExpansionPanels, ExpansionPanel, Chip, Icon } from 'svelte-materialify/src';
+  import { mdiDeleteForever, mdiPlusCircle } from '@mdi/js';
   import { getValidLayouts } from '../adm_utils.js';
   import { mapISO6391 } from '../utils.js';
 
@@ -18,7 +19,7 @@
     if (e.detail !== undefined && typeof(e.detail) === "string" && e.detail !== addItemStr){
       ADMStore.update(adm => {
         let ap = adm.find(ap => ap.id === activeAP.id);
-        ap.items.push({type: selectedAudioBlockItem, routing: []});
+        ap.items.push({type: selectedAudioBlockItem, routing: [], id: Math.random()});
         return adm;
       })
       // activeAP.items.push({type: e.detail, routing: []}); // this seems to store the new object but the list is not updated in this component.
@@ -26,6 +27,15 @@
       selectedAudioBlockItem = addItemStr;
     }
   };
+
+  const handleDeleteItem = (id) => {
+    ADMStore.update(adm => {
+      let ap = adm.find(ap => ap.id === activeAP.id);
+      let items = ap.items.filter(item => item.id != id);
+      ap.items = items;
+      return adm;
+    });
+  }
 
 </script>
 
@@ -57,17 +67,24 @@
     </Col>
   </Row> -->
   <Row>
-    <Col cols={12} sm={3} md={3}>
+    <Col cols={12} sm={5} md={5}>
       <div class="eps-area audioProgrammeItems">
         <ListItemGroup mandatory bind:value={activeItem} class="font-weight-bold">
-          <Select solo items={audioBlockItems} bind:value={selectedAudioBlockItem} on:change={handleAudioBlockItemSeleced} class="audioProgrammeItemsSelect default-color"></Select>
-          {#each activeAP.items as item}
-            <ListItem>{item.type}</ListItem>
+          <Select solo items={audioBlockItems} bind:value={selectedAudioBlockItem} on:change={handleAudioBlockItemSeleced} class="audioProgrammeItemsSelect default-color">
+          </Select>
+          {#each activeAP.items as item (item.id)}
+            <ListItem dense>
+              <TextField dense solo class="float-left" bind:value={item.name}>Name</TextField>
+              <span slot="append">
+                <Chip>{item.type}</Chip>
+                <a href="#" on:click={() => handleDeleteItem(item.id)}><Icon path={mdiDeleteForever} /></a>
+              </span>  
+            </ListItem>
           {/each}
         </ListItemGroup>
       </div>
     </Col>
-    <Col cols={12} sm={9} md={9}>
+    <Col cols={12} sm={7} md={7}>
       <AudioObject activeItem={activeAP.items[activeItem]}/>
     </Col>
   </Row>
