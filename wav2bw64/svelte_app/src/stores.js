@@ -22,7 +22,7 @@ function Store() {
           {type: "Object", routing: [1]},
           {type: "0+2+0", routing: [1, 2]},
         ],
-        language: 'DE'
+        language: 'de'
       },
       {
         id: 1,
@@ -37,7 +37,7 @@ function Store() {
           {type: "Object", routing: [8]},
           {type: "0+2+0", routing: [1, 2]} 
         ],
-        language: 'EN'
+        language: 'en'
       },
     ]
   );
