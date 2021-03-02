@@ -8,7 +8,7 @@
   let tabs = ["Routing", "Interactivity", "Importance", "Loudness"];
 </script>
 
-<div class="audioObjectArea">
+<div class="eps-area audioObjectArea">
 
   <Tabs fixedTabs bind:value={activeItemSettings}>
     <div slot="tabs">
@@ -46,7 +46,6 @@
 <style>
   .audioObjectArea {
     height: 400px;
-    background: #222222;
     /* padding: 12px; */
     margin-left: 20px;
   }

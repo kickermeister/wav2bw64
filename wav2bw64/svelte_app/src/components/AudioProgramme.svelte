@@ -41,12 +41,14 @@
   </Row>
 
   <Row class="mb-6">
-    <ExpansionPanels>
-      <ExpansionPanel>
-        <span slot="header">Loudness</span>
-        <h4>Loudness Settings</h4>
-      </ExpansionPanel>
-    </ExpansionPanels>
+    <Col cols={12} sm={12} md={12}>
+      <ExpansionPanels class="eps-area">
+        <ExpansionPanel>
+          <span slot="header">Loudness</span>  
+          <h4>Loudness Settings</h4>
+        </ExpansionPanel>
+      </ExpansionPanels>
+    </Col>
   </Row>
 
   <Row>
@@ -75,9 +77,13 @@
 
   }
 
+  :global(.audioProgrammeItemsSelect) {
+    border-radius: 2px;
+    border: 0px solid rgba(255, 255, 255, 0.15);
+    border-bottom-width: 2px;
+  }
+
   .audioProgrammeItems {
     height: 400px;
-    /* width: 250px; */
-    background: #222222;
   }
 </style>

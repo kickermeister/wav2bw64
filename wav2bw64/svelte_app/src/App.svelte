@@ -22,8 +22,9 @@
   
   
  <main>
+  <div class="materialApp">
   <MaterialApp theme='dark'>
-    <div class="materialApp">
+    
       <Tabs grow>
         <div slot="tabs">
           {#each $ADMStore as ap (ap.id)}
@@ -41,9 +42,9 @@
         {/each}
         
       </Tabs>
-    </div>
+    
   </MaterialApp>
-
+  </div>
   <Button on:click={logStore}>Log Store to Console</Button>
  </main>
   
@@ -52,8 +53,8 @@
 
 <style>
 	main {
-		/* padding: 100px; */
-	}
+    background: #121212;
+  }
 
   .materialApp {
     padding: 50px;
@@ -63,7 +64,7 @@
 	@media (min-width: 640px) {
 		main {
 			max-width: none;
-      height: 500px;
+      height: 100%;
 		}
 	}
 </style>
