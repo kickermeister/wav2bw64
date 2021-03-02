@@ -1,7 +1,7 @@
 <script>
   import { ADMStore } from '../stores.js';
   import AudioObject from './AudioObject.svelte'
-  import { Select, Container, Row, Col, TextField, ListItemGroup, ListItem, ExpansionPanels, ExpansionPanel, } from 'svelte-materialify/src';
+  import { Select, Container, Row, Col, TextField, ListItemGroup, ListItem, ExpansionPanels, ExpansionPanel } from 'svelte-materialify/src';
   import { getValidLayouts } from '../adm_utils.js';
   import { mapISO6391 } from '../utils.js';
 
