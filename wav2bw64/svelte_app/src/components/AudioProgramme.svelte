@@ -60,7 +60,7 @@
     <Col cols={12} sm={3} md={3}>
       <div class="eps-area audioProgrammeItems">
         <ListItemGroup mandatory bind:value={activeItem} class="font-weight-bold">
-          <Select solo depressed items={audioBlockItems} bind:value={selectedAudioBlockItem} on:change={handleAudioBlockItemSeleced} class="audioProgrammeItemsSelect primary-color"></Select>
+          <Select solo items={audioBlockItems} bind:value={selectedAudioBlockItem} on:change={handleAudioBlockItemSeleced} class="audioProgrammeItemsSelect default-color"></Select>
           {#each activeAP.items as item}
             <ListItem>{item.type}</ListItem>
           {/each}
