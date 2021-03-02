@@ -27,17 +27,17 @@
   <div class="materialApp">
   <MaterialApp theme='dark'>
     
-      <Tabs grow>
+      <Tabs >
         <div slot="tabs">
+          <Button on:click={handleAddAP} size="large" class="primary-color mr-2">
+            <Icon path={mdiPlusCircle} />
+          </Button>
           {#each $ADMStore as ap (ap.id)}
             <Tab>
               {ap.name}
                 <a href="#" on:click={() => handleDeleteAP(ap.id)}><Icon class="ml-16" path={mdiDeleteForever} /></a>
             </Tab>
           {/each}
-            <Button on:click={handleAddAP} size="large" class="primary-color float-right">
-              <Icon class="ml-16" path={mdiPlusCircle} />
-            </Button>
         </div>
         {#each $ADMStore as ap (ap.id)} 
           <TabContent>
