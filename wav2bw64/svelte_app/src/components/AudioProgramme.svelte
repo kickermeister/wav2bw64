@@ -11,11 +11,11 @@
 
   const languages = mapISO6391();
   const audioBlockItems = getValidLayouts(8);
-
-  let selectedAudioBlockItem = "Add Item";
+  const addItemStr = "Add Item";
+  let selectedAudioBlockItem = addItemStr;  // Do not change unless you know what you do!
 
   const handleAudioBlockItemSeleced = (e) => {
-    if (e.detail !== undefined && typeof(e.detail) === "string" && e.detail !== "Add Item"){
+    if (e.detail !== undefined && typeof(e.detail) === "string" && e.detail !== addItemStr){
       ADMStore.update(adm => {
         let ap = adm.find(ap => ap.id === activeAP.id);
         ap.items.push({type: selectedAudioBlockItem, routing: []});
@@ -23,7 +23,7 @@
       })
       // activeAP.items.push({type: e.detail, routing: []}); // this seems to store the new object but the list is not updated in this component.
       // Otherwise, the Select component would always display the selected value which would be odd in our case
-      selectedAudioBlockItem = "Add Item";
+      selectedAudioBlockItem = addItemStr;
     }
   };
 
