@@ -5,10 +5,14 @@
 
   export let activeItem;
   const wav_channels = 16;  //FIXME: DUMMY VALUE
-  $: routings = getLayoutRoutingPairs(activeItem.type, wav_channels);
+  let routings = [];
+  $: if(typeof(activeItem) !== "undefined"){
+    routings = getLayoutRoutingPairs(activeItem.type, wav_channels);
+  }
 
 </script>
 
+{#if activeItem}
 <div class="routing">
   <Container>
   <Row>
@@ -23,6 +27,7 @@
   </Row>
 </Container>
 </div>
+{/if}
 
 <style>
   .routing {
