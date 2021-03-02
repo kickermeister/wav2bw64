@@ -45,7 +45,7 @@
     
   </MaterialApp>
   </div>
-  <Button on:click={logStore}>Log Store to Console</Button>
+  <Button on:click={logStore} class="red white-text">Log Store to Console</Button>
  </main>
   
 
