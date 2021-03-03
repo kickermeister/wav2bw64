@@ -68,3 +68,8 @@ button:focus {
     border: solid rgba(255, 255, 255, 0.15);
     border-width: 2px;
 }
+
+
+.s-text-field__wrapper.outlined label.active {
+    background-color: #484848 !important;
+}
