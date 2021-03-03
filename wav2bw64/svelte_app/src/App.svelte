@@ -1,10 +1,13 @@
 
 <script>
 	import AudioProgramme from './components/AudioProgramme.svelte';
+  import FileUpload from './components/FileUpload.svelte';
 	import { ADMStore } from './stores.js';
   import { MaterialApp, Tabs, Tab, TabContent, Button, Icon } from 'svelte-materialify/src';
   import { mdiDeleteForever, mdiPlusCircle } from '@mdi/js';
 	
+  let wavInfo;
+
   const handleDeleteAP = (id) => {
     ADMStore.update(adm => {
       return adm.filter(ap => ap.id != id);
@@ -26,7 +29,8 @@
  <main>
   <div class="materialApp">
   <MaterialApp theme='dark'>
-    
+    <FileUpload bind:wavFile={wavInfo}></FileUpload>
+    {#if wavInfo}    
       <Tabs >
         <div slot="tabs">
           <Button on:click={handleAddAP} size="large" class="primary-color mr-2">
@@ -46,7 +50,7 @@
         {/each}
         
       </Tabs>
-    
+    {/if}
   </MaterialApp>
   </div>
   <Button on:click={logStore} class="red white-text">Log Store to Console</Button>
