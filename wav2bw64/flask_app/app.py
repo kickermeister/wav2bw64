@@ -11,34 +11,49 @@ from fileio import get_wav_info, generate_bw64_file
 
 UPLOAD_FOLDER = 'uploads'
 
-app = Flask(__name__,
-            static_url_path='',
+app = Flask(__name__)
+"""            static_url_path='',
             static_folder='web/static',
             template_folder='web/templates')
+"""
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 512 * 1024 * 1024
 
 
-@app.route('/', methods=['GET', 'POST'])
-def upload_file():
+# Path for our main Svelte page
+@app.route("/", methods=['GET', 'POST'])
+def base():
     if request.method == 'POST':
+        print("POST METHOD RECEIVED!")
+        print("FILE UPLOADED: ", request.files['file'].filename)
         # check if the post request has the file part
-        # if 'file' not in request.files:
-        #    flash('No file part')
-        #    return redirect(request.url)
+        if 'file' not in request.files:
+            print('No file part')
+            return redirect(request.url)
         file = request.files['file']
         # if user does not select file, browser also
         # submit an empty part without filename
         if file.filename == '':
-            flash('No selected file')
+            print('No selected file')
             return redirect(request.url)
         else:
             print("File uploading")
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return redirect(url_for('show_wav_info',
-                                    filename=filename))
-    return render_template('index.html')
+            path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            wav_info = get_wav_info(path)
+            print(wav_info)
+            return jsonify({'path': path, 'filename': filename, 'wav_info': wav_info})
+    return send_from_directory('../svelte_app/public/', 'index.html')
+
+# Path for all the static files (compiled JS/CSS, etc.)
+@app.route("/<path:path>")
+def home(path):
+    return send_from_directory('../svelte_app/public/', path)
+
+@app.route("/rand")
+def hello():
+    return str(random.randint(0, 100))
 
 @app.route('/show_wav_info/<filename>')
 def show_wav_info(filename):
@@ -89,4 +104,4 @@ def set_bw64_config():
 
 if __name__ == '__main__':
     app.secret_key = 'super secret key'
-    app.run(debug=True)
+    app.run(debug=True, port=8080)
