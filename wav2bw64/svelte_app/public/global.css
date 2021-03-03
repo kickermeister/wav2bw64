@@ -73,3 +73,7 @@ button:focus {
 .s-text-field__wrapper.outlined label.active {
     background-color: #484848 !important;
 }
+
+.s-text-field__wrapper.solo {
+	background-color: #363636;
+}
