@@ -1,6 +1,7 @@
 <script>
   import { Card, CardText, CardActions, Button } from 'svelte-materialify/src';
-  
+  import { wav_channels } from '../stores.js';
+
   export let wavFile;
   let lastFile = "";
 
@@ -41,7 +42,10 @@ function uploadFile(file) {
     redirect: 'follow',
   })
   .then(json)
-  .then((e) => {console.log("Received: ", e)}) // <- Add `progressDone` call here
+  .then((e) => {
+    console.log("Received: ", e);
+    wav_channels.update(n => n = e.wav_info["Channels"]);
+  }) // <- Add `progressDone` call here
   .catch((e) => { console.log('Received Error: ', e);});
 }
 

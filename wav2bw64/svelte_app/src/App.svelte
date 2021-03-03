@@ -2,12 +2,10 @@
 <script>
 	import AudioProgramme from './components/AudioProgramme.svelte';
   import FileUpload from './components/FileUpload.svelte';
-	import { ADMStore } from './stores.js';
+	import { ADMStore, wav_channels } from './stores.js';
   import { MaterialApp, Tabs, Tab, TabContent, Button, Icon } from 'svelte-materialify/src';
   import { mdiDeleteForever, mdiPlusCircle } from '@mdi/js';
 	
-  let wavInfo;
-
   const handleDeleteAP = (id) => {
     ADMStore.update(adm => {
       return adm.filter(ap => ap.id != id);
@@ -21,6 +19,7 @@
 
   const logStore = () => {
     console.log($ADMStore);
+    console.log($wav_channels);
   }
 
 </script>
@@ -29,8 +28,9 @@
  <main>
   <div class="materialApp">
   <MaterialApp theme='dark'>
-    <FileUpload bind:wavFile={wavInfo}></FileUpload>
-    {#if wavInfo}    
+    <FileUpload ></FileUpload>
+    <!-- Display ADM authoring window only when the wav information has been received from backend and saved to wav_channel store -->
+    {#if $wav_channels >= 0}    
       <Tabs >
         <div slot="tabs">
           <Button on:click={handleAddAP} size="large" class="primary-color mr-2">

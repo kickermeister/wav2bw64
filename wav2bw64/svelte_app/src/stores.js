@@ -1,12 +1,14 @@
 import { writable } from 'svelte/store';
 
+export const wav_channels = writable();
+
 function getAudioProgrammeStructure(){
   return {
     id: Math.random(),
     name: "Give me a name", 
     loudness: -23,
     items: [],
-    language: "EN"
+    language: "en"
   }
 }
 
