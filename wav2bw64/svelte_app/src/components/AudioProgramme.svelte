@@ -1,5 +1,5 @@
 <script>
-  import { ADMStore, wav_channels } from '../stores.js';
+  import { ADMStore, wav_channels, ID } from '../stores.js';
   import AudioObject from './AudioObject.svelte'
   import { Select, Container, Row, Col, TextField, ListItemGroup, ListItem, ExpansionPanels, ExpansionPanel, Chip, Icon } from 'svelte-materialify/src';
   import { mdiDeleteForever } from '@mdi/js';
@@ -19,7 +19,7 @@
     if (e.detail !== undefined && typeof(e.detail) === "string" && e.detail !== addItemStr){
       ADMStore.update(adm => {
         let ap = adm.find(ap => ap.id === activeAP.id);
-        ap.items.push({type: selectedAudioBlockItem, routing: [], id: Math.random()});
+        ap.items.push({type: selectedAudioBlockItem, routing: [], id: ID()});
         return adm;
       })
       // activeAP.items.push({type: e.detail, routing: []}); // this seems to store the new object but the list is not updated in this component.
