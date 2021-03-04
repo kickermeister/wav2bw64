@@ -51,10 +51,6 @@ def base():
 def home(path):
     return send_from_directory('../svelte_app/public/', path)
 
-@app.route("/rand")
-def hello():
-    return str(random.randint(0, 100))
-
 @app.route('/show_wav_info/<filename>')
 def show_wav_info(filename):
     path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
@@ -83,10 +79,6 @@ def render_waveform():
 def uploads(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'],
                                filename)
-@app.context_processor
-def get_bs2051_layouts():
-    bs2051_layouts = bs2051.layout_names
-    return dict(bs2051_layouts=bs2051_layouts)
 
 @app.route("/set_bw64_config", methods=['POST'])
 def set_bw64_config():
