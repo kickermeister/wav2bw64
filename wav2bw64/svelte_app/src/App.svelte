@@ -2,7 +2,8 @@
 <script>
 	import AudioProgramme from './components/AudioProgramme.svelte';
   import FileUpload from './components/FileUpload.svelte';
-	import { ADMStore, wav_channels } from './stores.js';
+	import { ADMStore, fileInfo } from './stores.js';
+  import { exportADM } from './utils.js';
   import { MaterialApp, Tabs, Tab, TabContent, Button, Icon } from 'svelte-materialify/src';
   import { mdiDeleteForever, mdiPlusCircle } from '@mdi/js';
 	
@@ -19,7 +20,7 @@
 
   const logStore = () => {
     console.log($ADMStore);
-    console.log($wav_channels);
+    console.log($fileInfo);
   }
 
 </script>
@@ -30,7 +31,7 @@
   <MaterialApp theme='dark'>
     <FileUpload ></FileUpload>
     <!-- Display ADM authoring window only when the wav information has been received from backend and saved to wav_channel store -->
-    {#if $wav_channels >= 0}    
+    {#if $fileInfo.channels > 0}    
       <Tabs >
         <div slot="tabs">
           <Button on:click={handleAddAP} size="large" class="primary-color mr-2">
@@ -54,6 +55,7 @@
   </MaterialApp>
   </div>
   <Button on:click={logStore} class="red white-text">Log Store to Console</Button>
+  <Button on:click={() => exportADM($ADMStore, $fileInfo)} class="red white-text">Export ADM</Button>
  </main>
   
 
