@@ -2,7 +2,7 @@
   import { Card, CardText, CardActions, Button } from 'svelte-materialify/src';
   import { wav_channels } from '../stores.js';
 
-  export let wavFile;
+  let wavFile;
   let lastFile = "";
 
   $: if (wavFile) {
