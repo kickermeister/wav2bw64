@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store';
 
-export const wav_channels = writable();
+export const fileInfo = writable({filename: "", path: "", channels: 0});
 
 function getAudioProgrammeStructure(){
   return {

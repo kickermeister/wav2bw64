@@ -1,6 +1,6 @@
 <script>
   import { Card, CardText, CardActions, Button } from 'svelte-materialify/src';
-  import { wav_channels } from '../stores.js';
+  import { fileInfo } from '../stores.js';
 
   let wavFile;
   let lastFile = "";
@@ -44,14 +44,19 @@ function uploadFile(file) {
   .then(json)
   .then((e) => {
     console.log("Received: ", e);
-    wav_channels.update(n => n = e.wav_info["Channels"]);
+    fileInfo.update(info => {
+      info.filename = e.filename;
+      info.path = e.path;
+      info.channels = e.wav_info["Channels"];
+      return info;
+    });
   }) // <- Add `progressDone` call here
   .catch((e) => { console.log('Received Error: ', e);});
 }
 
 </script>
 
-{#if !wavFile}
+{#if $fileInfo.channels === 0}
 <div class="d-flex justify-center mt-4 mb-4">
   <Card hover style="max-width:300px;">
     <div class="pl-4 pr-4 pt-3">
@@ -63,7 +68,7 @@ function uploadFile(file) {
     </CardText>
     <CardActions>
       <form method="post" enctype="multipart/form-data">
-        <label for="file-upload" class="s-btn primary-color size-default"> Upload File
+        <label for="file-upload" class="d-flex s-btn primary-color size-default justify-center"> Upload File
         </label>
         <input
           id="file-upload"

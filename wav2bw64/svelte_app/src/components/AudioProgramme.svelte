@@ -1,5 +1,5 @@
 <script>
-  import { ADMStore, wav_channels, ID } from '../stores.js';
+  import { ADMStore, fileInfo, ID } from '../stores.js';
   import AudioObject from './AudioObject.svelte'
   import { Select, Container, Row, Col, TextField, ListItemGroup, ListItem, ExpansionPanels, ExpansionPanel, Chip, Icon } from 'svelte-materialify/src';
   import { mdiDeleteForever } from '@mdi/js';
@@ -11,7 +11,7 @@
   let activeItem = 0;
 
   const languages = mapISO6391();
-  const audioBlockItems = getValidLayouts($wav_channels);
+  const audioBlockItems = getValidLayouts($fileInfo.channels);
   const addItemStr = "Add Item";
   let selectedAudioBlockItem = addItemStr;  // Do not change unless you know what you do!
 

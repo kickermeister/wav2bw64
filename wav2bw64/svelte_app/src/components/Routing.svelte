@@ -1,12 +1,12 @@
 <script>
-  import { ADMStore, wav_channels } from '../stores.js';
+  import { ADMStore, fileInfo } from '../stores.js';
   import { Select, Container, Row, Col } from 'svelte-materialify/src';
   import { getLayoutRoutingPairs } from '../adm_utils.js';
 
   export let activeItem;
   let routings = [];
   $: if(typeof(activeItem) !== "undefined"){
-    routings = getLayoutRoutingPairs(activeItem.type, $wav_channels);
+    routings = getLayoutRoutingPairs(activeItem.type, $fileInfo.channels);
   }
 
 </script>
