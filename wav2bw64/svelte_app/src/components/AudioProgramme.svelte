@@ -19,10 +19,10 @@
     if (e.detail !== undefined && typeof(e.detail) === "string" && e.detail !== addItemStr){
       ADMStore.update(adm => {
         let ap = adm.find(ap => ap.id === activeAP.id);
-        ap.items.push({type: selectedAudioBlockItem, routing: [], id: ID()});
+        ap.apItems.push({type: selectedAudioBlockItem, routing: [], id: ID()});
         return adm;
       })
-      // activeAP.items.push({type: e.detail, routing: []}); // this seems to store the new object but the list is not updated in this component.
+      // activeAP.apItems.push({type: e.detail, routing: []}); // this seems to store the new object but the list is not updated in this component.
       // Otherwise, the Select component would always display the selected value which would be odd in our case
       selectedAudioBlockItem = addItemStr;
     }
@@ -31,8 +31,8 @@
   const handleDeleteItem = (id) => {
     ADMStore.update(adm => {
       let ap = adm.find(ap => ap.id === activeAP.id);
-      let items = ap.items.filter(item => item.id != id);
-      ap.items = items;
+      let apItems = ap.apItems.filter(item => item.id != id);
+      ap.apItems = apItems;
       return adm;
     });
   }
@@ -72,7 +72,7 @@
         <ListItemGroup mandatory bind:value={activeItem} class="font-weight-bold">
           <Select solo items={audioBlockItems} bind:value={selectedAudioBlockItem} on:change={handleAudioBlockItemSeleced} class="audioProgrammeItemsSelect default-color">
           </Select>
-          {#each activeAP.items as item (item.id)}
+          {#each activeAP.apItems as item (item.id)}
             <ListItem dense>
               <TextField dense outlined class="mt-2 mr-10" bind:value={item.name}>Name</TextField>
               <span slot="append">
@@ -85,7 +85,7 @@
       </div>
     </Col>
     <Col cols={12} sm={7} md={7}>
-      <AudioObject activeItem={activeAP.items[activeItem]}/>
+      <AudioObject activeItem={activeAP.apItems[activeItem]}/>
     </Col>
   </Row>
 </Container>

@@ -7,7 +7,7 @@ function getAudioProgrammeStructure(){
     id: ID(),
     name: "Give me a name", 
     loudness: -23,
-    items: [],
+    apItems: [],
     language: "en"
   }
 }
@@ -26,7 +26,7 @@ function Store() {
         id: ID(),
         name: "Audio Programme 1",
         loudness: -23,
-        items: [
+        apItems: [
           {id: ID(), name: "My Object 1" , type: "Object", routing: "1 - 1"},
           {id: ID(), name: "Stereo Bed", type: "0+2+0", routing: "1 - 2"},
         ],
@@ -36,7 +36,7 @@ function Store() {
         id: ID(),
         name: "Audio Programme 2",
         loudness: -23,
-        items: [
+        apItems: [
           {id: ID(), name: "Surround Bed", type: "0+5+0", routing: "1 - 6"},
           {id: ID(), name: "Music", type: "0+2+0", routing: "1 - 2"},
           {id: ID(), name: "Dialog", type: "Object", routing: "7 - 7"},

@@ -31,7 +31,7 @@ export function exportADM(ADMStore, fileInfo){
 function prepareADMforExport(adm){
   console.log("ADm to prepare: ", adm);
   for (const ap of adm){
-    for (const item of ap.items){
+    for (const item of ap.apItems){
       item.routing = getRangeFromDisplayedName(item.routing);
     }
   }
