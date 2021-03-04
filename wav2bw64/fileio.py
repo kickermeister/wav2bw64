@@ -32,33 +32,42 @@ def load_adm_yaml_file(filename):
         yaml = ruamel.yaml.safe_load(f)
     return yaml
 
-def generate_adm(adm_dict, bitDepth=16, sampleRate=48000):
+def generate_adm(adm_array, bitDepth=16, sampleRate=48000):
     builder = ExtendedADMBuilder()
     builder.load_common_definitions()
-    for ap_name, conf in adm_dict.items():
-        builder.create_programme(audioProgrammeName=ap_name)
+    for ap in adm_array:
+        builder.create_programme(audioProgrammeName=ap["name"])
         builder.create_content(audioContentName="Content")
-        for system, channels in conf.items():
-            builder.create_multichannel_item(TypeDefinition.DirectSpeakers,
-                                             name=system,
-                                             system=system,
-                                             bitDepth=bitDepth,
-                                             sampleRate=sampleRate,
-                                             track_idxs=channels)
+        for item in ap["apItems"]:
+            if item["type"] in bs2051.layout_names:
+                builder.create_multichannel_item(TypeDefinition.DirectSpeakers,
+                                                name=item["name"],
+                                                system=item["type"],
+                                                bitDepth=bitDepth,
+                                                sampleRate=sampleRate,
+                                                track_idxs=item["routing"])
+            elif item["type"] == "Object":
+                pass
+            elif item["type"] == "Binaural":
+                pass
+            elif item["type"] == "HOA":
+                pass
+            else:
+                logging.error("No valid type in passed ADM structure found.")
     return builder.adm
 
 
-def generate_bw64_file(in_wav_path, out_bwav_path, adm_dict, screen=None):
-    # adm_dict = {'AP1': {'0+5+0': [1, 2, 3, 4, 5, 6], '0+2+0': [7, 8]}, 'AP2': {'0+2+0': [1, 2]}}
+def generate_bw64_file(in_wav_path, out_bwav_path, adm_array, screen=None):
+    # adm_array = {'AP1': {'0+5+0': [1, 2, 3, 4, 5, 6], '0+2+0': [7, 8]}, 'AP2': {'0+2+0': [1, 2]}}
     if in_wav_path == out_bwav_path:
         logging.error("Outfile must be different from infile!")
         return False
     wav_info = get_wav_info(in_wav_path)
-    highest_nr = _find_highest_channel_number(adm_dict)
+    highest_nr = _find_highest_channel_number(adm_array)
     if wav_info["Channels"] < highest_nr:
         logging.error("ERROR: File has only %s channels but %s are defined in ADM metadata! Aborting." % (wav_info["Channels"], highest_nr))
         return False
-    adm = generate_adm(adm_dict)
+    adm = generate_adm(adm_array)
     if screen is not None:
         adm.audioProgrammes[0].referenceScreen = screen
 
@@ -85,11 +94,11 @@ def generate_bw64_file(in_wav_path, out_bwav_path, adm_dict, screen=None):
     return True
 
 
-def _find_highest_channel_number(adm_dict):
+def _find_highest_channel_number(adm_array):
     max_values = []
-    for ap, conf in adm_dict.items():
-        for sys, channels in conf.items():
-            max_values.append(max(channels))
+    for ap in adm_array:
+        for item in ap["apItems"]:
+            max_values.append(max(item["routing"]))
     return max(max_values)
 
 
