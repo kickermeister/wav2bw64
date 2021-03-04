@@ -89,7 +89,7 @@ def set_bw64_config():
     res = generate_bw64_file(in_wav_path, out_bwav_path, adm_dict)
     if res is True:
         out_bwav = out_bwav_path.rsplit('/', 1)[-1]
-        return url_for('uploads', filename=out_bwav)
+        return jsonify({'bw64_file': out_bwav})
     else:
         return 'Something went wrong!', 400
 
