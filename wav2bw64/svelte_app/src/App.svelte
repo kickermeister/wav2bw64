@@ -3,7 +3,6 @@
 	import AudioProgramme from './components/AudioProgramme.svelte';
   import FileUpload from './components/FileUpload.svelte';
 	import { ADMStore, fileInfo } from './stores.js';
-  import { downloadBW64 } from './utils.js';
   import { getRangeFromDisplayedName } from './adm_utils.js';
   import { MaterialApp, Tabs, Tab, TabContent, Button, Icon } from 'svelte-materialify/src';
   import { mdiDeleteForever, mdiPlusCircle } from '@mdi/js';
