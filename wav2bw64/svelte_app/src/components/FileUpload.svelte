@@ -1,6 +1,6 @@
 <script>
   import { Card, CardText, CardActions, Button } from 'svelte-materialify/src';
-  import { fileInfo } from '../stores.js';
+  import { ADMStore, fileInfo } from '../stores.js';
 
   let wavFile;
   let lastFile = "";
@@ -50,6 +50,7 @@ function uploadFile(file) {
       info.channels = e.wav_info["Channels"];
       return info;
     });
+    ADMStore.addAP();
   }) // <- Add `progressDone` call here
   .catch((e) => { console.log('Received Error: ', e);});
 }
