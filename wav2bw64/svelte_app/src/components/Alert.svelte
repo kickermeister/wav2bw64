@@ -20,7 +20,7 @@
       {message}
     </CardText>
     <CardActions>
-      <Button on:click={close} text>Ok</Button>
+      <Button on:click={close} class="blue white-text">Ok</Button>
     </CardActions>
   </Card>
 </Dialog>
