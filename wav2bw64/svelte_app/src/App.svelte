@@ -3,7 +3,8 @@
 	import AudioProgramme from './components/AudioProgramme.svelte';
   import FileUpload from './components/FileUpload.svelte';
 	import { ADMStore, fileInfo } from './stores.js';
-  import { exportADM } from './utils.js';
+  import { downloadBW64 } from './utils.js';
+  import { getRangeFromDisplayedName } from './adm_utils.js';
   import { MaterialApp, Tabs, Tab, TabContent, Button, Icon } from 'svelte-materialify/src';
   import { mdiDeleteForever, mdiPlusCircle } from '@mdi/js';
 	
@@ -22,6 +23,36 @@
     console.log($ADMStore);
     console.log($fileInfo);
   }
+
+  const exportADM = () => {
+  // make deep copy of our store to avoid saving our modifications in case something happens during export / writing
+  let adm = JSON.parse(JSON.stringify($ADMStore));
+  for (const ap of adm){
+    for (const item of ap.apItems){
+      item.routing = getRangeFromDisplayedName(item.routing);
+    }
+  }
+  let url = '/set_bw64_config';
+  var out_path = $fileInfo.path.substr(0, $fileInfo.path.lastIndexOf(".")) + "_bw64.wav";
+  let formData = new FormData();
+  formData.append('adm_dict', JSON.stringify(adm));
+  formData.append('in_wav_path', $fileInfo.path);
+  formData.append('out_bwav_path', out_path);
+  fetch(url, {
+    method: 'POST',
+    body: formData,
+    redirect: 'follow',
+  })
+  .then(response => response.json())
+  .then((e) => {
+    fileInfo.update(info => {
+      info.bw64_file = e.bw64_file;
+      return info;
+    });
+  }) // <- Add `progressDone` call here
+  .catch((e) => { console.log(e);});
+}
+
 
 </script>
   
@@ -55,7 +86,11 @@
   </MaterialApp>
   </div>
   <Button on:click={logStore} class="red white-text">Log Store to Console</Button>
-  <Button on:click={() => exportADM($ADMStore, $fileInfo)} class="red white-text">Export ADM</Button>
+  <Button on:click={() => exportADM()} class="red white-text">Export ADM</Button>
+  {#if $fileInfo.bw64_file}
+    <Button on:click={() => downloadBW64($fileInfo.bw64_file)} class="green white-text">Download BW64 File</Button>
+  {/if}
+
  </main>
   
 
