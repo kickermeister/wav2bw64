@@ -71,7 +71,7 @@
           {#each $ADMStore as ap (ap.id)}
             <Tab>
               {ap.name}
-                <a href="#" on:click={() => handleDeleteAP(ap.id)}><Icon class="ml-16" path={mdiDeleteForever} /></a>
+                <a href="#" on:click={() => handleDeleteAP(ap.id)} class="hover_delete"><Icon path={mdiDeleteForever} /></a>
             </Tab>
           {/each}
         </div>

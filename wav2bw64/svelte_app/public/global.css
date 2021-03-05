@@ -77,3 +77,7 @@ button:focus {
 .s-text-field__wrapper.solo {
 	background-color: #363636;
 }
+
+.hover_delete > i > svg:hover {
+    color: #CF6679 !important;
+  }

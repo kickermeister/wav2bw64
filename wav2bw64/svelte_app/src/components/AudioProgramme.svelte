@@ -77,7 +77,7 @@
               <TextField dense outlined class="mt-2 mr-10" bind:value={item.name}>Name</TextField>
               <span slot="append">
                 <Chip>{item.type}</Chip>
-                <a href="#" on:click={() => handleDeleteItem(item.id)}><Icon path={mdiDeleteForever} /></a>
+                <a href="#" on:click={() => handleDeleteItem(item.id)} class="hover_delete"><Icon path={mdiDeleteForever} /></a>
               </span>  
             </ListItem>
           {/each}
