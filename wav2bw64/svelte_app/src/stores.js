@@ -41,7 +41,6 @@ function Store() {
           {id: ID(), name: "Music", type: "0+2+0", routing: "1 - 2"},
           {id: ID(), name: "Dialog", type: "Object", routing: "7 - 7"},
           {id: ID(), name: "Commentary", type: "Object", routing: "8 - 8"}, 
-          {id: ID(), name: "7.1 Bed", type: "0+7+0", routing: "1 - 8"},
           {id: ID(), name: "Effect", type: "Object", routing: "8 - 8"},
           {id: ID(), name: "Music Bed 2", type: "0+2+0", routing: "1 - 2"} 
         ],
