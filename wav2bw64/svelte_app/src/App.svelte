@@ -86,7 +86,9 @@
   </MaterialApp>
   </div>
   <Button on:click={logStore} class="red white-text">Log Store to Console</Button>
-  <Button on:click={() => exportADM()} class="red white-text">Export ADM</Button>
+  {#if $fileInfo.channels > 0 && $ADMStore.length > 0}
+    <Button on:click={() => exportADM()} class="blue white-text">Export ADM</Button>
+  {/if}
   {#if $fileInfo.bw64_file}
     <a href={$fileInfo.bw64_file} download={$fileInfo.bw64_file.split("/").slice(-1)[0]} style="text-decoration: none;"><Button class="green white-text">Download BW64 File</Button></a>
   {/if}
