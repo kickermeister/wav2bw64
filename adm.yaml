@@ -1,5 +1,23 @@
-"8ch SDI version":
-  "0+5+0": [1, 2, 3, 4, 5, 6]
-  "0+2+0": [7, 8]
-"Stereo":
-  "0+2+0": [1, 2]
+- name: Audio Programme 1
+  apItems:
+  - name: My Object 1
+    routing: [3]
+    type: Object
+  - name: Stereo Bed
+    routing: [1, 2]
+    type: 0+2+0
+  language: de
+  loudness: -23
+- name: Audio Programme 2
+  apItems:
+  - name: Surround Bed
+    routing: [1, 2, 3, 4, 5, 6]
+    type: 0+5+0
+  - name: Music
+    routing: [7, 8]
+    type: 0+2+0
+  - name: Dialog
+    routing: [3]
+    type: Object
+  language: en
+  loudness: -23

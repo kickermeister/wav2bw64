@@ -14,11 +14,29 @@ wav2bw64 infile.wav outfilebw64.wav adm.yaml
 Very basic example structure:
 
 ```
-"8ch SDI version":
-  "0+5+0": [1, 2, 3, 4, 5, 6]
-  "0+2+0": [7, 8]
-"Stereo":
-  "0+2+0": [1, 2]
+- name: Audio Programme 1
+  apItems:
+  - name: My Object 1
+    routing: [3]
+    type: Object
+  - name: Stereo Bed
+    routing: [1, 2]
+    type: 0+2+0
+  language: de
+  loudness: -23
+- name: Audio Programme 2
+  apItems:
+  - name: Surround Bed
+    routing: [1, 2, 3, 4, 5, 6]
+    type: 0+5+0
+  - name: Music
+    routing: [7, 8]
+    type: 0+2+0
+  - name: Dialog
+    routing: [3]
+    type: Object
+  language: en
+  loudness: -23
 ```
 
-This configures two audioProgrammes, one with the name "8ch SDI version" and one with "Stereo". The first audioProgramme contains two audioObjects, one with a 0+5+0 DirectSpeakers type and one with 0+2+0 DirectSpeakers type. The array defines the track index for the CHNA chunk. It is possible to refer to the same track indices multiple times, as it is done in the example for the 0+2+0 DirectSpeakers type in the "Stereo" programme.
+This configures two audioProgrammes, one with the name "Audio Programme 1" and one with "Audio Programme 2". The first audioProgramme contains two audioObjects, one with an Object type and one with 0+2+0 DirectSpeakers type. The routing array defines the track indices for the CHNA chunk. It is possible to refer to the same track indices multiple times, as it is done in the example.
