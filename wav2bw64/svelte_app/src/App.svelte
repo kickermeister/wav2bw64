@@ -2,15 +2,28 @@
 <script>
 	import AudioProgramme from './components/AudioProgramme.svelte';
   import FileUpload from './components/FileUpload.svelte';
+  import Alert from './components/Alert.svelte';
 	import { ADMStore, fileInfo } from './stores.js';
   import { getRangeFromDisplayedName } from './adm_utils.js';
   import { MaterialApp, Tabs, Tab, TabContent, Button, Icon } from 'svelte-materialify/src';
   import { mdiDeleteForever, mdiPlusCircle } from '@mdi/js';
 	
+
+  let tabValue;
+  let alertActive = false;
+  let alertMessage;
+  let alertTitle; 
+
   const handleDeleteAP = (id) => {
-    ADMStore.update(adm => {
-      return adm.filter(ap => ap.id != id);
-    });
+    if ($ADMStore.length > 1){
+      ADMStore.update(adm => {
+        return adm.filter(ap => ap.id != id);
+      });
+      tabValue = 0;
+    } else {
+      alertActive = true;
+      alertMessage = "There must be at least one Audio Programme!";
+    }
   }
 
   const handleAddAP = (e) => {
@@ -60,9 +73,10 @@
   <div class="materialApp">
   <MaterialApp theme='dark'>
     <FileUpload ></FileUpload>
+    <Alert bind:active={alertActive} bind:message={alertMessage} bind:title={alertTitle} />
     <!-- Display ADM authoring window only when the wav information has been received from backend and saved to wav_channel store -->
     {#if $fileInfo.channels > 0}    
-      <Tabs >
+      <Tabs bind:value={tabValue} >
         <div slot="tabs">
           <Button on:click={handleAddAP} size="large" class="primary-color mr-2">
             <Icon path={mdiPlusCircle} />
