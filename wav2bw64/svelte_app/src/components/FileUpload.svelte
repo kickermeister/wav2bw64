@@ -1,9 +1,11 @@
 <script>
-  import { Card, CardText, CardActions, Button } from 'svelte-materialify/src';
+  import { Card, CardText, CardActions, ProgressLinear } from 'svelte-materialify/src';
   import { ADMStore, fileInfo } from '../stores.js';
 
   let wavFile;
   let lastFile = "";
+  let showProgress = false;
+  let progressValue = 0;
 
   $: if (wavFile) {
     // binding to "files" attribute is triggered twice for some reasons, so catching it here
@@ -12,6 +14,7 @@
       // https://developer.mozilla.org/en-US/docs/Web/API/FileList
       console.log(wavFile);
       let files = [...wavFile];
+      showProgress = true;
       uploadFile(files[0]);
       lastFile = wavFile;
     }
@@ -59,7 +62,7 @@ function uploadFile(file) {
 
 {#if $fileInfo.channels === 0}
 <div class="d-flex justify-center mt-4 mb-4">
-  <Card hover style="max-width:300px;">
+  <Card hover style="max-width:500px;">
     <div class="pl-4 pr-4 pt-3">
       <span class="text-h5 mb-2">Upload WAV File</span>
       <br />
@@ -80,6 +83,9 @@ function uploadFile(file) {
         />
       </form>
     </CardActions>
+    {#if showProgress}
+      <ProgressLinear height="16px" indeterminate></ProgressLinear>
+    {/if}
   </Card>
 </div>
 {/if}
@@ -87,15 +93,5 @@ function uploadFile(file) {
 <style>
   input[type="file"] {
     display: none;
-  }
-
-  .custom-file-upload {
-    display: inline-block;
-    padding: 6px 12px;
-    /* width: 50px;
-    height: 20px; */
-    background-color: #1A5D9F;
-    color: white;
-    cursor: pointer;
   }
 </style>
