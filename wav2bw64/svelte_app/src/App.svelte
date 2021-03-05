@@ -88,7 +88,7 @@
   <Button on:click={logStore} class="red white-text">Log Store to Console</Button>
   <Button on:click={() => exportADM()} class="red white-text">Export ADM</Button>
   {#if $fileInfo.bw64_file}
-    <Button on:click={() => downloadBW64($fileInfo.bw64_file)} class="green white-text">Download BW64 File</Button>
+    <a href={$fileInfo.bw64_file} download={$fileInfo.bw64_file.split("/").slice(-1)[0]} style="text-decoration: none;"><Button class="green white-text">Download BW64 File</Button></a>
   {/if}
 
  </main>
