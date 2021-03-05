@@ -21,9 +21,7 @@
         <div>
           {#if tab === "Routing"}
             <Routing activeItem={activeItem}/>
-            {activeItem.type}
-            {activeItem.routing}  
-            <h4>Routing</h4>
+            <!-- <h4>Routing</h4> -->
             <!-- <h4>Bla</h4>
             <h4>Bla</h4>
             <h4>Bla</h4>
