@@ -85,3 +85,24 @@ button:focus {
 .s-icon {
 	color: #fff !important;
 }
+
+
+.Object {
+    background-color: #FFFF80 !important;
+	color: #121212 !important;
+  }
+
+  .Binaural {
+    background-color: #00FF80 !important;
+	color: #121212 !important;
+  }
+
+  .HOA {
+    background-color: #80FFFF !important;
+	color: #121212 !important;
+  }
+
+  .DirectSpeaker {
+    background-color: #FF80FF !important;
+	color: #121212 !important;
+  }

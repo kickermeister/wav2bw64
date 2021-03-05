@@ -76,7 +76,7 @@
             <ListItem dense>
               <TextField dense outlined class="mt-2 mr-10" bind:value={item.name}>Name</TextField>
               <span slot="append">
-                <Chip>{item.type}</Chip>
+                <Chip class={/^\d/.test(item.type) ? "DirectSpeaker" : item.type}>{item.type}</Chip>
                 <a href="#" on:click={() => handleDeleteItem(item.id)} class="hover_delete"><Icon path={mdiDeleteForever} /></a>
               </span>  
             </ListItem>
