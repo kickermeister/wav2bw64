@@ -2,11 +2,12 @@ from attr import attrib, attrs
 import logging
 import ruamel.yaml
 import lxml.etree
+from fractions import Fraction
 from wavinfo import WavInfoReader as wavreader
 from ear.core import bs2051
 from ear.fileio import openBw64
 from ear.fileio.adm.builder import ADMBuilder
-from ear.fileio.adm.elements import AudioObject, AudioTrackUID, TypeDefinition
+from ear.fileio.adm.elements import AudioObject, AudioTrackUID, TypeDefinition, AudioBlockFormatObjects, AudioBlockFormatBinaural
 from ear.fileio.adm.chna import populate_chna_chunk
 from ear.fileio.adm.generate_ids import generate_ids
 from ear.fileio.adm.xml import adm_to_xml
@@ -32,6 +33,16 @@ def load_adm_yaml_file(filename):
         yaml = ruamel.yaml.safe_load(f)
     return yaml
 
+
+def load_block_objects(block):
+    kwargs = {}
+    for attr in ["position", "gain"]:
+        if attr in block:
+            kwargs[attr] = block[attr]
+
+    return AudioBlockFormatObjects(**kwargs)
+
+
 def generate_adm(adm_array, bitDepth=16, sampleRate=48000):
     builder = ExtendedADMBuilder()
     builder.load_common_definitions()
@@ -47,11 +58,20 @@ def generate_adm(adm_array, bitDepth=16, sampleRate=48000):
                                                 sampleRate=sampleRate,
                                                 track_idxs=item["routing"])
             elif item["type"] == "Object":
-                pass
+                blocks = [load_block_objects(item["object_parameter"])]
+                # zero-based index and supporting Mono objects only for now
+                adm_item = builder.create_item_objects(name=item["name"],
+                                            track_index=item["routing"][0] - 1,
+                                            block_formats=blocks)
             elif item["type"] == "Binaural":
-                pass
+                # zero-based index
+                for ch in item["routing"]:
+                    builder.create_item_mono(TypeDefinition.Binaural,
+                                             name=item["name"],
+                                             track_index=ch - 1,
+                                             block_formats=[AudioBlockFormatBinaural()])
             elif item["type"] == "HOA":
-                pass
+                logging.warning("Type HOA not (yet) supported.")
             else:
                 logging.error("No valid type in passed ADM structure found.")
     return builder.adm

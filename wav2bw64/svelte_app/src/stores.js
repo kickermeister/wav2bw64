@@ -27,7 +27,7 @@ function Store() {
       //   name: "Audio Programme 1",
       //   loudness: -23,
       //   apItems: [
-      //     {id: ID(), name: "My Object 1" , type: "Object", routing: "1 - 1"},
+      //     {id: ID(), name: "My Object 1" , type: "Object", routing: "1 - 1", object_parameter: {position: {azimuth: 0, elevation: 0, distance: 1.0}}},
       //     {id: ID(), name: "Stereo Bed", type: "0+2+0", routing: "1 - 2"},
       //   ],
       //   language: 'de'
@@ -39,10 +39,9 @@ function Store() {
       //   apItems: [
       //     {id: ID(), name: "Surround Bed", type: "0+5+0", routing: "1 - 6"},
       //     {id: ID(), name: "Music", type: "0+2+0", routing: "1 - 2"},
-      //     {id: ID(), name: "Dialog", type: "Object", routing: "7 - 7"},
-      //     {id: ID(), name: "Commentary", type: "Object", routing: "8 - 8"}, 
-      //     {id: ID(), name: "Effect", type: "Object", routing: "8 - 8"},
-      //     {id: ID(), name: "Music Bed 2", type: "0+2+0", routing: "1 - 2"} 
+      //     {id: ID(), name: "Dialog", type: "Object", routing: "7 - 7", object_parameter: {position: {azimuth: 0, elevation: 0, distance: 1.0}}},
+      //     {id: ID(), name: "Effect", type: "Object", routing: "8 - 8", object_parameter: {position: {azimuth: 0, elevation: 0, distance: 1.0}}},
+      //     {id: ID(), name: "Headphones", type: "Binaural", routing: "1 - 2"} 
       //   ],
       //   language: 'en'
       // },
