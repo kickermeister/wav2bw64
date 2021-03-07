@@ -8,8 +8,7 @@
 
   export let activeAP;
 
-  let activeItem = 0;
-
+  let activeItem;
   const languages = mapISO6391();
   const audioBlockItems = getValidLayouts($fileInfo.channels);
   const addItemStr = "Add Item";
@@ -28,6 +27,10 @@
     }
   };
 
+  const handleItemActive = (item) => {
+    activeItem = item;
+  }
+
   const handleDeleteItem = (id) => {
     ADMStore.update(adm => {
       let ap = adm.find(ap => ap.id === activeAP.id);
@@ -35,6 +38,9 @@
       ap.apItems = apItems;
       return adm;
     });
+    if (id === activeItem.id){
+      activeItem = undefined;
+    }
   }
 
 </script>
@@ -60,20 +66,14 @@
       </ExpansionPanels>
     </Col>
   </Row>
-
-  <!-- <Row>
-    <Col cols={12} sm={3} md={3}>
-      <Select solo items={audioBlockItems} bind:value={selectedAudioBlockItem} on:change={handleAudioBlockItemSeleced} class="eps-area"></Select>
-    </Col>
-  </Row> -->
   <Row>
     <Col cols={12} sm={5} md={5}>
       <div class="eps-area audioProgrammeItems">
-        <ListItemGroup mandatory bind:value={activeItem} class="font-weight-bold">
+        <ListItemGroup mandatory class="font-weight-bold" activeClass="selectedItem">
           <Select solo items={audioBlockItems} bind:value={selectedAudioBlockItem} on:change={handleAudioBlockItemSeleced} class="audioProgrammeItemsSelect default-color">
           </Select>
           {#each activeAP.apItems as item (item.id)}
-            <ListItem dense>
+            <ListItem dense on:click={() => handleItemActive(item)}>
               <TextField dense outlined class="mt-2 mr-10" bind:value={item.name}>Name</TextField>
               <span slot="append">
                 <Chip class={/^\d/.test(item.type) ? "DirectSpeaker" : item.type}>{item.type}</Chip>
@@ -85,7 +85,7 @@
       </div>
     </Col>
     <Col cols={12} sm={7} md={7}>
-      <AudioObject activeItem={activeAP.apItems[activeItem]}/>
+      <AudioObject activeItem={activeItem}/>
     </Col>
   </Row>
 </Container>
@@ -107,4 +107,9 @@
   .audioProgrammeItems {
     /* height: 400px; */
   }
+
+  :global(.selectedItem) {
+    background-color: #1A5D9F;
+  }
+
 </style>
