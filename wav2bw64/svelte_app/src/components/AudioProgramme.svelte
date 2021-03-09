@@ -80,6 +80,10 @@
                 <a href="#" on:click={() => handleDeleteItem(item.id)} class="hover_delete"><Icon path={mdiDeleteForever} /></a>
               </span>  
             </ListItem>
+          {:else}
+            <ListItem disabled>
+              No Item in Audioprogramme
+            </ListItem>
           {/each}
         </ListItemGroup>
       </div>
