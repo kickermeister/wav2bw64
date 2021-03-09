@@ -10,20 +10,28 @@
 	
 
   let tabValue;
+  let selectedAP;
   let alertActive = false;
   let alertMessage;
-  let alertTitle; 
+  let alertTitle;
 
   const handleDeleteAP = (id) => {
     if ($ADMStore.length > 1){
       ADMStore.update(adm => {
         return adm.filter(ap => ap.id != id);
       });
-      tabValue = 0;
+      if (selectedAP.id === id){
+        tabValue = 0;
+      }
     } else {
       alertActive = true;
       alertMessage = "There must be at least one Audio Programme!";
     }
+  }
+
+  const handleAPSelected = (ap) => {
+    selectedAP = ap;
+    console.log(ap);
   }
 
   const handleAddAP = (e) => {
@@ -82,9 +90,9 @@
             <Icon path={mdiPlusCircle} />
           </Button>
           {#each $ADMStore as ap (ap.id)}
-            <Tab>
+            <Tab on:click={() => handleAPSelected(ap)}>
               {ap.name}
-                <a href="#" on:click={() => handleDeleteAP(ap.id)} class="hover_delete"><Icon path={mdiDeleteForever} /></a>
+              <a href="#" on:click={() => handleDeleteAP(ap.id)} class="hover_delete"><Icon path={mdiDeleteForever} /></a>
             </Tab>
           {/each}
         </div>
