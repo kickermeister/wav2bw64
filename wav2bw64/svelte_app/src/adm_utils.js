@@ -20,9 +20,13 @@ export function getDisplayedNameFromRange(array){
 }
 
 export function getRangeFromDisplayedName(str){
-  let min = parseInt(str.split(" - ")[0]);
-  let max = parseInt(str.split(" - ")[1]);
-  return getRangeFromMinMax(min, max);
+  try {
+    let min = parseInt(str.split(" - ")[0]);
+    let max = parseInt(str.split(" - ")[1]);
+    return getRangeFromMinMax(min, max);
+  } catch (e) {
+    return false;
+  }
 }
 
 export function getMinMaxFromRange(array){

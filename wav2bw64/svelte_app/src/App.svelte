@@ -48,8 +48,23 @@
   // make deep copy of our store to avoid saving our modifications in case something happens during export / writing
   let adm = JSON.parse(JSON.stringify($ADMStore));
   for (const ap of adm){
-    for (const item of ap.apItems){
-      item.routing = getRangeFromDisplayedName(item.routing);
+    if (ap.apItems.length > 0) {
+      for (const item of ap.apItems){
+        let res = getRangeFromDisplayedName(item.routing);
+        if (res !== false) {
+          item.routing = res;
+        } else {
+          alertMessage = "Please enter valid channel routing for item \"" + item.name + "\" in AudioProgramme \"" + ap.name + "\"!";
+          alertTitle = "Error";
+          alertActive = true;
+          return;
+        }
+      }
+    } else {
+      alertMessage = "Please add at least one item for AudioProgramme \"" + ap.name + "\"!";
+      alertTitle = "Error";
+      alertActive = true;
+      return;
     }
   }
   let url = '/set_bw64_config';
@@ -70,7 +85,12 @@
       return info;
     });
   }) // <- Add `progressDone` call here
-  .catch((e) => { console.log(e);});
+  .catch((e) => {
+    console.log(e);
+    alertMessage = "Error during ADM Export: " + e;
+    alertTitle = "Export Error";
+    alertActive = true;
+  });
 }
 
 
