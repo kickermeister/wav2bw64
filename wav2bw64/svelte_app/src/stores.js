@@ -54,8 +54,20 @@ function Store() {
     set,
     addAP: () => update(adm => {
       return [...adm, getAudioProgrammeStructure()];
+    }),
+    addItem: (apToUpdate, itemType) => update(adm => {
+      let ap = adm.find(ap => ap.id === apToUpdate.id);
+      if (itemType === "Object"){
+        ap.apItems.push({type: itemType, 
+                         routing: [],
+                         id: ID(),
+                         object_parameter: {position: {azimuth: 0.0, elevation: 0.0, distance: 1.0}}
+        });
+      } else {
+        ap.apItems.push({type: itemType, routing: [], id: ID()});
+      }
+      return adm;
     })
-    //addAP: () => console.log("Add AP in Store!")
   }
 }
 export const ADMStore = Store();
