@@ -1,41 +1,45 @@
 <script>
-    import { ADMStore, fileInfo } from '../stores.js';
-    import { Select, Container, Row, Col } from 'svelte-materialify/src';
+  import Alert from './Alert.svelte';
+  import { Container, Row, Col, Slider, Button, Icon } from 'svelte-materialify/src';
+  import { mdiInformationOutline } from '@mdi/js';
+
+  export let activeItem;
   
-    export let activeItem;
-    let active = false;
-    let routings = [];
-    $: if(typeof(activeItem) !== "undefined" && activeItem.type === "Object"){
-        //   routings = getLayoutRoutingPairs(activeItem.type, $fileInfo.channels);
-        active = true;
-    }
+  let active = false;
+  let alertActive = false;
+
+  const showInfo = () => {
+    alertActive = true;
+  }
+
+  $: if(typeof(activeItem) !== "undefined" && activeItem.type === "Object"){
+    active = true;
+  } else {
+    active = false;
+  }
   
-  </script>
+</script>
   
-  {#if activeItem}
-  <div class="routing">
-    <Container>
+{#if active}
+  <Alert bind:active={alertActive} title={"Info"} message={"Note that all object parameters here will be valid for the whole duration of the wav file!"}></Alert>
+  <Container>
+    <div class="float-right">
+      <Button fab size="x-small" on:click={() => showInfo()}>
+        <Icon path={mdiInformationOutline} />
+      </Button>
+    </div>
     <Row>
-      <Col cols={12} sm={9} md={9}>  
-        Set Object Parameter
-      </Col>
-      <Col cols={12} sm={3} md={3}>
-        <div class="routing-select">
-          <!-- <Select solo items={routings} placeholder="Routing" bind:value={activeItem.routing} /> -->
-        </div>
+      <Col cols={12} sm={12} md={12}>
+        <h5>Position</h5>
+        <Slider thumb min={-180} max={180} step={1} bind:value={activeItem.object_parameter.position.azimuth}>Azimuth</Slider>
+        <Slider thumb min={-90} max={90} step={1} bind:value={activeItem.object_parameter.position.elevation}>Elevation</Slider>
+        <Slider thumb min={0} max={1} step={0.01} bind:value={activeItem.object_parameter.position.distance}>Distance</Slider>
+        <span></span>
       </Col>
     </Row>
-  </Container>
-  </div>
-  {/if}
-  
-  <style>
-    .routing {
-      /* min-height: 100%; */
-    }
-  
-    .routing-select {
-      height: 400px;
-    }
-  </style>
+  </Container>    
+{/if}
+
+<style>
+</style>
   
