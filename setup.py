@@ -9,7 +9,8 @@ setup(
     long_description_content_type='text/markdown',
     install_requires=[
         'ear~=2.0.0',
-        'wavinfo~=1.6.2'
+        'wavinfo~=1.6.2',
+        'Flask==1.1.2'
     ],
     extras_require={
         'test': [],
