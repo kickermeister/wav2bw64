@@ -33,7 +33,7 @@
       ap.apItems = apItems;
       return adm;
     });
-    if (id === activeItem.id){
+    if (typeof(activeItem) !== "undefined" && id === activeItem.id){
       activeItem = undefined;
     }
   }
