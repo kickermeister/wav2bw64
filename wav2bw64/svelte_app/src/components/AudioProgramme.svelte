@@ -15,8 +15,8 @@
   let selectedAudioBlockItem = addItemStr;  // Do not change unless you know what you do!
 
   const handleAudioBlockItemSeleced = (e) => {
-    if (e.detail !== undefined && typeof(e.detail) === "string" && e.detail !== addItemStr){
-      ADMStore.addItem(activeAP, e.detail);
+    if (e.detail !== undefined && typeof(e.detail[0]) === "string" && e.detail !== addItemStr){
+      ADMStore.addItem(activeAP, e.detail[0]);
       // Otherwise, the Select component would always display the selected value which would be odd in our case
       selectedAudioBlockItem = addItemStr;
     }
