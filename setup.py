@@ -21,7 +21,8 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            'wav2bw64 = wav2bw64.main:main'
+            'wav2bw64 = wav2bw64.main:main',
+            'adm_author = wav2bw64.flask_app.app:main'
         ]
     },
 )
