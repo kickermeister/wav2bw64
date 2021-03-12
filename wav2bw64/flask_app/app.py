@@ -39,6 +39,7 @@ def base():
         else:
             print("File uploading")
             filename = secure_filename(file.filename)
+            os.mkdir(UPLOAD_FOLDER)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             wav_info = get_wav_info(path)
