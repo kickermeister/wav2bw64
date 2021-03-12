@@ -95,8 +95,7 @@ def set_bw64_config():
 def main():
     app.secret_key = 'super secret key'
     args = parse_command_line()
-    log = logging.getLogger('werkzeug')
-    log.setLevel(logging.ERROR)
+    #log = logging.getLogger('werkzeug')
     if args.debug is True:
         logging.basicConfig(level=logging.DEBUG)
         app.run(debug=True, host=args.host, port=args.port)
