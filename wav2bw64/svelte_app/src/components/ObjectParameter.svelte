@@ -31,9 +31,9 @@
     <Row>
       <Col cols={12} sm={12} md={12}>
         <h5>Position</h5>
-        <Slider thumb min={-180} max={180} step={1} bind:value={activeItem.object_parameter.position.azimuth}>Azimuth</Slider>
-        <Slider thumb min={-90} max={90} step={1} bind:value={activeItem.object_parameter.position.elevation}>Elevation</Slider>
-        <Slider thumb min={0} max={1} step={0.01} bind:value={activeItem.object_parameter.position.distance}>Distance</Slider>
+        <Slider thumb persistentThumb min={-180} max={180} bind:value={activeItem.object_parameter.position.azimuth} color="white">Azimuth</Slider>
+        <Slider thumb persistentThumb min={-90} max={90} bind:value={activeItem.object_parameter.position.elevation} color="white">Elevation</Slider>
+        <Slider thumb persistentThumb min={0} max={1} step={0.01} precision={2} bind:value={activeItem.object_parameter.position.distance} color="white">Distance</Slider>
         <span></span>
       </Col>
     </Row>
