@@ -8,7 +8,7 @@
   import { MaterialApp, Tabs, Tab, TabContent, Button, Icon } from 'svelte-materialify/src';
   import { mdiDeleteForever, mdiPlusCircle } from '@mdi/js';
 	
-
+  const isProd = process.env.isProd;
   let tabValue;
   let selectedAP;
   let alertActive = false;
@@ -126,7 +126,9 @@
     {/if}
   </MaterialApp>
   </div>
-  <Button on:click={logStore} class="red white-text">Log Store to Console</Button>
+  {#if !isProd}
+    <Button on:click={logStore} class="red white-text">Log Store to Console</Button>
+  {/if}
   {#if $fileInfo.channels > 0 && $ADMStore.length > 0}
     <Button on:click={() => exportADM()} class="blue white-text">Export ADM</Button>
   {/if}
