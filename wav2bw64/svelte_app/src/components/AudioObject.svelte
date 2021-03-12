@@ -2,6 +2,7 @@
   import { Tabs, Tab, TabContent } from 'svelte-materialify/src';
   import { ADMStore } from '../stores.js';
   import Routing from './Routing.svelte';
+  import Importance from './Importance.svelte';
   import ObjectParameter from './ObjectParameter.svelte';
   
   export let activeItem;
@@ -44,7 +45,7 @@
           {:else if tab === "Interactivity"}
             <h4>Interactivity</h4>
           {:else if tab === "Importance"}
-            <h4>Importance</h4>
+            <Importance activeItem={activeItem} />
           {:else if tab === "Object"}
             <ObjectParameter activeItem={activeItem} />
           {/if}

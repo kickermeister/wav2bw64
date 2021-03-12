@@ -61,10 +61,11 @@ function Store() {
         ap.apItems.push({type: itemType, 
                          routing: [],
                          id: ID(),
+                         importance: 10,
                          object_parameter: {position: {azimuth: 0.0, elevation: 0.0, distance: 1.0}}
         });
       } else {
-        ap.apItems.push({type: itemType, routing: [], id: ID()});
+        ap.apItems.push({type: itemType, routing: [], id: ID(), importance: 10});
       }
       return adm;
     })
