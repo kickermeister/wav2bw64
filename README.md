@@ -3,25 +3,30 @@
 A very simple tool to add basic ADM metadata to a WAV file and export it as BW64 file.
 
 ## Installation
+
 ```bash
 pip install .
 ```
 
 ## Usage
+
 ### Command Line Usage
+
 ```bash
 wav2bw64 infile.wav outfilebw64.wav adm.yaml
 ```
 
 ### Web GUI Usage
+
 ```bash
 adm-authoring -h 127.0.0.1 -p 8080 
 ```
 
 ### ADM config in YAML file
+
 Very basic example structure:
 
-```
+```yaml
 - name: Audio Programme 1
   apItems:
   - name: My Object 1
@@ -54,4 +59,28 @@ Very basic example structure:
 
 This configures two audioProgrammes, one with the name "Audio Programme 1" and one with "Audio Programme 2". The first audioProgramme contains two audioObjects, one with an Object type and one with 0+2+0 DirectSpeakers type. The routing array defines the track indices for the CHNA chunk. It is possible to refer to the same track indices multiple times, as it is done in the example.
 
-## Development
+## GUI Development
+
+In production mode, the Flask server is just using a bundled Javascript and CSS which was generated using [Svelte](https://svelte.dev/). To change the bundeled Javascript and CSS, the Svelte project needs to be build again: 
+
+### Dependencies installation
+
+```bash
+cd svelte_app
+npm install
+```
+
+### Environments
+Using 
+
+```bash
+npm run build
+```
+
+will just build the Svelte project once and close, whilst
+
+```bash
+npm run dev
+```
+
+will start a webserver (which is actually not needed, since we are using Flask as webserver) in development mode which will rebuild the bundles on evey change.
