@@ -16,7 +16,7 @@
   <Container>
   <Row>
     <Col cols={12} sm={9} md={9}>  
-      Select channel routing for item:
+      Select channel routing for item
     </Col>
     <Col cols={12} sm={3} md={3}>
       <div class="routing-select">
