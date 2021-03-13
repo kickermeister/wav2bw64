@@ -167,6 +167,6 @@
   :global(.storeArea) {
     width: 50%; 
     margin: auto; 
-    min-height: max-content !important;
+    min-height: 800px !important;
   }
 </style>
