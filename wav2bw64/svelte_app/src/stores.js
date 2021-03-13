@@ -57,16 +57,19 @@ function Store() {
     }),
     addItem: (apToUpdate, itemType) => update(adm => {
       let ap = adm.find(ap => ap.id === apToUpdate.id);
+      let itemStructure = {type: itemType,
+                             routing: [],
+                             id: ID(),
+                             importance: 10,
+                             interactivity: {
+                               onOffInteract: false,
+                               gainInteractionRange: false,
+                               positionInteractionRange: false
+                             }};
       if (itemType === "Object"){
-        ap.apItems.push({type: itemType, 
-                         routing: [],
-                         id: ID(),
-                         importance: 10,
-                         object_parameter: {position: {azimuth: 0.0, elevation: 0.0, distance: 1.0}}
-        });
-      } else {
-        ap.apItems.push({type: itemType, routing: [], id: ID(), importance: 10});
+        itemStructure["object_parameter"] = {position: {azimuth: 0.0, elevation: 0.0, distance: 1.0}}
       }
+      ap.apItems.push(itemStructure);
       return adm;
     })
   }

@@ -2,6 +2,7 @@
   import { Tabs, Tab, TabContent } from 'svelte-materialify/src';
   import { ADMStore } from '../stores.js';
   import Routing from './Routing.svelte';
+  import Interactivity from './Interactivity.svelte';
   import Importance from './Importance.svelte';
   import ObjectParameter from './ObjectParameter.svelte';
   
@@ -36,14 +37,8 @@
         <div>
           {#if tab === "Routing"}
             <Routing activeItem={activeItem}/>
-            <!-- <h4>Routing</h4> -->
-            <!-- <h4>Bla</h4>
-            <h4>Bla</h4>
-            <h4>Bla</h4>
-            <h4>Bla</h4>
-            <h4>Bla</h4> -->
           {:else if tab === "Interactivity"}
-            <h4>Interactivity</h4>
+            <Interactivity activeItem={activeItem} />
           {:else if tab === "Importance"}
             <Importance activeItem={activeItem} />
           {:else if tab === "Object"}
