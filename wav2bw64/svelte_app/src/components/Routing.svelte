@@ -15,10 +15,10 @@
 <div class="routing">
   <Container>
   <Row>
-    <Col cols={12} sm={9} md={9}>  
+    <Col cols={12} sm={8} md={8}>  
       Select channel routing for item
     </Col>
-    <Col cols={12} sm={3} md={3}>
+    <Col cols={12} sm={4} md={4}>
       <div class="routing-select">
         <Select solo items={routings} placeholder="Routing" bind:value={activeItem.routing} />
       </div>
