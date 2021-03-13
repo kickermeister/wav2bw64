@@ -10,12 +10,16 @@
   let activeItemSettings = 0;
   let tabs = ["Routing", "Interactivity", "Importance", "Object"];
   let hideObjectsTab = true;
+  let hideTab = true;
   $: if (typeof(activeItem) !== "undefined"){
       if (activeItem.type === "Object"){
         hideObjectsTab = false;
       } else {
         hideObjectsTab = true;
       }
+      hideTab = false;
+  } else {
+    hideTab = true;
   }
 
 </script>
@@ -26,7 +30,7 @@
     <div slot="tabs">
       {#each tabs as tab}
         {#if tab !== "Object"}
-          <Tab>{tab}</Tab>
+          <Tab bind:disabled={hideTab}>{tab}</Tab>
         {:else if tab === "Object"}
           <Tab bind:disabled={hideObjectsTab}>{tab}</Tab>
         {/if}
