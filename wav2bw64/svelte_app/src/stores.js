@@ -63,8 +63,10 @@ function Store() {
                              importance: 10,
                              interactivity: {
                                onOffInteract: false,
-                               gainInteractionRange: false,
-                               positionInteractionRange: false
+                               gainInteract: false,
+                               gainInteractionRange: [-6, 6],
+                               positionInteract: false,
+                               positionInteractionRange: [-30, 30]
                              }};
       if (itemType === "Object"){
         itemStructure["object_parameter"] = {position: {azimuth: 0.0, elevation: 0.0, distance: 1.0}}
