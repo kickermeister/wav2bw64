@@ -19,6 +19,10 @@
       ADMStore.addItem(activeAP, e.detail);
       // Otherwise, the Select component would always display the selected value which would be odd in our case
       selectedAudioBlockItem = addItemStr;
+      // if (activeAP.apItems.length === 1){
+      //   console.log("Only one item in list. Activate first!");
+      //   handleItemActive(activeAP.apItems[0]);
+      // }
     }
   };
 
