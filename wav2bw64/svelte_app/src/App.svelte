@@ -5,7 +5,7 @@
   import Alert from './components/Alert.svelte';
 	import { ADMStore, fileInfo } from './stores.js';
   import { getRangeFromDisplayedName } from './adm_utils.js';
-  import { MaterialApp, Tabs, Tab, TabContent, Button, Icon } from 'svelte-materialify/src';
+  import { MaterialApp, Tabs, Tab, TabContent, Button, Icon, Textarea } from 'svelte-materialify/src';
   import { mdiDeleteForever, mdiPlusCircle } from '@mdi/js';
 	
   const isProd = process.env.isProd;
@@ -14,6 +14,7 @@
   let alertActive = false;
   let alertMessage;
   let alertTitle;
+  let stringifiedADMStore;;
 
   const handleDeleteAP = (id) => {
     if ($ADMStore.length > 1){
@@ -42,6 +43,7 @@
   const logStore = () => {
     console.log($ADMStore);
     console.log($fileInfo);
+    stringifiedADMStore = JSON.stringify($ADMStore, undefined, 4);
   }
 
   const exportADM = () => {
@@ -136,6 +138,10 @@
     <a href={$fileInfo.bw64_file} download={$fileInfo.bw64_file.split("/").slice(-1)[0]} style="text-decoration: none;"><Button class="green white-text">Download BW64 File</Button></a>
   {/if}
 
+  {#if !isProd}
+    <Textarea readonly class="storeArea" value={stringifiedADMStore} />
+  {/if}
+
  </main>
   
 
@@ -157,4 +163,10 @@
       height: 100%;
 		}
 	}
+
+  :global(.storeArea) {
+    width: 50%; 
+    margin: auto; 
+    min-height: max-content !important;
+  }
 </style>
