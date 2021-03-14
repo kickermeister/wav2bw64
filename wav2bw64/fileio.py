@@ -7,7 +7,14 @@ from wavinfo import WavInfoReader as wavreader
 from ear.core import bs2051
 from ear.fileio import openBw64
 from ear.fileio.adm.builder import ADMBuilder
-from ear.fileio.adm.elements import AudioObject, AudioTrackUID, TypeDefinition, AudioBlockFormatObjects, AudioBlockFormatBinaural
+from ear.fileio.adm.elements import (AudioObject,
+                                     AudioObjectInteraction,
+                                     GainInteractionRange,
+                                     PositionInteractionRange,
+                                     AudioTrackUID,
+                                     TypeDefinition,
+                                     AudioBlockFormatObjects,
+                                     AudioBlockFormatBinaural)
 from ear.fileio.adm.chna import populate_chna_chunk
 from ear.fileio.adm.generate_ids import generate_ids
 from ear.fileio.adm.xml import adm_to_xml
@@ -77,6 +84,21 @@ def generate_adm(adm_array, bitDepth=16, sampleRate=48000):
             
             if "importance" in item:
                 adm_item.audio_object.importance = item["importance"]
+            data = item["interactivity"]
+            if data["onOffInteract"] or data["positionInteract"] or data["gainInteract"]:
+                adm_item.audio_object.interact = True
+                aoi = AudioObjectInteraction(onOffInteract=data["onOffInteract"])
+                if data["positionInteract"]:
+                    pos_range = PositionInteractionRange(minAzimuth=float(data["positionInteractionRange"][0]),
+                                                         maxAzimuth=float(data["positionInteractionRange"][1]))
+                    aoi.positionInteract = True
+                    aoi.positionInteractionRange = pos_range
+                if data["gainInteract"]:
+                    gain_range = GainInteractionRange(min=float(data["gainInteractionRange"][0]),
+                                                      max=float(data["gainInteractionRange"][1]))
+                    aoi.gainInteract = True
+                    aoi.gainInteractionRange = gain_range
+                adm_item.audio_object.audioObjectInteraction = aoi
     return builder.adm
 
 
