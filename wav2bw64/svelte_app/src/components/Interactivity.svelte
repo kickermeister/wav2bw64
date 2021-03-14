@@ -28,9 +28,17 @@
                   min={-180} 
                   max={180} 
                   step={1} 
-                  bind:value={activeItem.interactivity.positionInteractionRange} 
+                  bind:value={activeItem.interactivity.azRange} 
                   color="white"
-          >Position Interaction Range</Slider>
+          >Azimuth Range</Slider>
+          <Slider thumb 
+                  persistentThumb 
+                  min={-90} 
+                  max={90} 
+                  step={1} 
+                  bind:value={activeItem.interactivity.elRange} 
+                  color="white"
+          >Elevation Range</Slider>
         {/if}
       </Col>
     </Row>
