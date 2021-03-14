@@ -47,11 +47,11 @@ def generate_adm(adm_array, bitDepth=16, sampleRate=48000):
     builder = ExtendedADMBuilder()
     builder.load_common_definitions()
     for ap in adm_array:
-        builder.create_programme(audioProgrammeName=ap["name"])
+        builder.create_programme(audioProgrammeName=ap["name"], audioProgrammeLanguage=ap["language"])
         builder.create_content(audioContentName="Content")
         for item in ap["apItems"]:
             if item["type"] in bs2051.layout_names:
-                builder.create_multichannel_item(TypeDefinition.DirectSpeakers,
+                adm_item = builder.create_multichannel_item(TypeDefinition.DirectSpeakers,
                                                 name=item["name"],
                                                 system=item["type"],
                                                 bitDepth=bitDepth,
@@ -74,6 +74,9 @@ def generate_adm(adm_array, bitDepth=16, sampleRate=48000):
                 logging.warning("Type HOA not (yet) supported.")
             else:
                 logging.error("No valid type in passed ADM structure found.")
+            
+            if "importance" in item:
+                adm_item.audio_object.importance = item["importance"]
     return builder.adm
 
 
@@ -88,6 +91,7 @@ def generate_bw64_file(in_wav_path, out_bwav_path, adm_array, screen=None):
         logging.error("ERROR: File has only %s channels but %s are defined in ADM metadata! Aborting." % (wav_info["Channels"], highest_nr))
         return False
     adm = generate_adm(adm_array)
+    logging.debug("Generated ADM Structure: %s" % adm)
     if screen is not None:
         adm.audioProgrammes[0].referenceScreen = screen
 
