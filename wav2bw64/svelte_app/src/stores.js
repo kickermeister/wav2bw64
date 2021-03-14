@@ -8,7 +8,7 @@ function getAudioProgrammeStructure(){
     name: "Give me a name", 
     loudness: -23,
     apItems: [],
-    language: "en"
+    language: "eng"
   }
 }
 
@@ -64,9 +64,10 @@ function Store() {
                              interactivity: {
                                onOffInteract: false,
                                gainInteract: false,
-                               gainInteractionRange: [-6, 6],
+                               gainInteractionRange: [-6.0, 6.0],
                                positionInteract: false,
-                               positionInteractionRange: [-30, 30]
+                               azRange: [-30.0, 30.0],
+                               elRange: [-30.0, 30.0],
                              }};
       if (itemType === "Object"){
         itemStructure["object_parameter"] = {position: {azimuth: 0.0, elevation: 0.0, distance: 1.0}}
