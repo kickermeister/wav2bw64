@@ -8,7 +8,7 @@ setup(
     long_description=open('README.md').read() + '\n' + open('CHANGELOG.md').read(),
     long_description_content_type='text/markdown',
     install_requires=[
-        'ear~=2.0.0',
+        'ear @ git+https://github.com/felix-lau/ebu_adm_renderer.git',
         'wavinfo~=1.6.2',
         'Flask==1.1.2'
     ],
