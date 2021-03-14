@@ -10,6 +10,7 @@
     "@rollup/plugin-commonjs": "^17.0.0",
     "@rollup/plugin-node-resolve": "^11.0.0",
     "@rollup/plugin-replace": "^2.4.1",
+    "langs": "^2.0.0",
     "postcss": "^8.2.6",
     "rollup": "^2.3.4",
     "rollup-plugin-css-only": "^3.1.0",
@@ -23,7 +24,6 @@
   },
   "dependencies": {
     "@mdi/js": "^5.9.55",
-    "iso-639-1": "^2.1.8",
     "sirv-cli": "^1.0.0"
   }
 }
