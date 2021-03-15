@@ -89,8 +89,10 @@ def generate_adm(adm_array, bitDepth=16, sampleRate=48000):
                 adm_item.audio_object.interact = True
                 aoi = AudioObjectInteraction(onOffInteract=data["onOffInteract"])
                 if data["positionInteract"]:
-                    pos_range = PositionInteractionRange(minAzimuth=float(data["positionInteractionRange"][0]),
-                                                         maxAzimuth=float(data["positionInteractionRange"][1]))
+                    pos_range = PositionInteractionRange(minAzimuth=float(data["azRange"][0]),
+                                                         maxAzimuth=float(data["azRange"][1]),
+                                                         minElevation=float(data["elRange"][0]),
+                                                         maxElevation=float(data["elRange"][1]))
                     aoi.positionInteract = True
                     aoi.positionInteractionRange = pos_range
                 if data["gainInteract"]:
