@@ -21,7 +21,7 @@
       ADMStore.update(adm => {
         return adm.filter(ap => ap.id != id);
       });
-      if (selectedAP.id === id){
+      if (typeof(selectedAP) !== "undefined" && selectedAP.id === id){
         tabValue = 0;
       }
     } else {
