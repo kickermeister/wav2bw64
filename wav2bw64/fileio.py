@@ -4,6 +4,7 @@ import ruamel.yaml
 import lxml.etree
 from fractions import Fraction
 from wavinfo import WavInfoReader as wavreader
+from numpy import power as pow
 from ear.core import bs2051
 from ear.fileio import openBw64
 from ear.fileio.adm.builder import ADMBuilder
@@ -96,8 +97,11 @@ def generate_adm(adm_array, bitDepth=16, sampleRate=48000):
                     aoi.positionInteract = True
                     aoi.positionInteractionRange = pos_range
                 if data["gainInteract"]:
-                    gain_range = GainInteractionRange(min=float(data["gainInteractionRange"][0]),
-                                                      max=float(data["gainInteractionRange"][1]))
+                    # convert dB values to linear, since ITU-R BS.2076-1 expects linear values and -2 uses linear as default
+                    min_lin = pow(10, data["gainInteractionRange"][0]/ 20)
+                    max_lin = pow(10, data["gainInteractionRange"][1]/ 20)
+                    gain_range = GainInteractionRange(min=min_lin,
+                                                      max=max_lin)
                     aoi.gainInteract = True
                     aoi.gainInteractionRange = gain_range
                 adm_item.audio_object.audioObjectInteraction = aoi
