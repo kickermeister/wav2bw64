@@ -5,7 +5,7 @@ export const fileInfo = writable({filename: "", path: "", channels: 0});
 function getAudioProgrammeStructure(){
   return {
     id: ID(),
-    name: "Give me a name", 
+    name: "Audio Programme 1", 
     loudness: -23,
     apItems: [],
     language: "eng"
