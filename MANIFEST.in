@@ -1,0 +1,2 @@
+include wav2bw64/svelte_app/public/*
+include wav2bw64/svelte_app/public/build/*
