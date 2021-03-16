@@ -23,7 +23,7 @@ wav2bw64 infile.wav outfilebw64.wav adm.yaml
 Start Web server:
 
 ```bash
-adm_author -h 127.0.0.1 -p 8080 
+adm_author --host 127.0.0.1 --port 8080 
 ```
 
 Open http://127.0.0.1:8080 in your Browser 
