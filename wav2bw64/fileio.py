@@ -85,26 +85,32 @@ def generate_adm(adm_array, bitDepth=16, sampleRate=48000):
             
             if "importance" in item:
                 adm_item.audio_object.importance = item["importance"]
-            data = item["interactivity"]
-            if data["onOffInteract"] or data["positionInteract"] or data["gainInteract"]:
-                adm_item.audio_object.interact = True
-                aoi = AudioObjectInteraction(onOffInteract=data["onOffInteract"])
-                if data["positionInteract"]:
-                    pos_range = PositionInteractionRange(minAzimuth=float(data["azRange"][0]),
-                                                         maxAzimuth=float(data["azRange"][1]),
-                                                         minElevation=float(data["elRange"][0]),
-                                                         maxElevation=float(data["elRange"][1]))
-                    aoi.positionInteract = True
-                    aoi.positionInteractionRange = pos_range
-                if data["gainInteract"]:
-                    # convert dB values to linear, since ITU-R BS.2076-1 expects linear values and -2 uses linear as default
-                    min_lin = pow(10, data["gainInteractionRange"][0]/ 20)
-                    max_lin = pow(10, data["gainInteractionRange"][1]/ 20)
-                    gain_range = GainInteractionRange(min=min_lin,
-                                                      max=max_lin)
-                    aoi.gainInteract = True
-                    aoi.gainInteractionRange = gain_range
-                adm_item.audio_object.audioObjectInteraction = aoi
+            if "interactivity" in item:
+                data = item["interactivity"]
+                if "onOffInteract" in data or "positionInteract" in data or "gainInteract" in data:
+                    adm_item.audio_object.interact = True
+                    if "onOffInteract" not in data:
+                        logging.warning("onOffInteract parameter is required! Setting to false.")
+                        data["onOffInteract"] = False
+                    aoi = AudioObjectInteraction(onOffInteract=data["onOffInteract"])
+                    if "positionInteract" in data:
+                        aoi.positionInteract = data["positionInteract"]
+                        if data["positionInteract"] is True:
+                            pos_range = PositionInteractionRange(minAzimuth=float(data["azRange"][0]),
+                                                                 maxAzimuth=float(data["azRange"][1]),
+                                                                 minElevation=float(data["elRange"][0]),
+                                                                 maxElevation=float(data["elRange"][1]))
+                            aoi.positionInteractionRange = pos_range
+                    if "gainInteract" in data:
+                        aoi.gainInteract = data["gainInteract"]
+                        if data["gainInteract"] is True:  
+                            # convert dB values to linear, since ITU-R BS.2076-1 expects linear values and -2 uses linear as default
+                            min_lin = pow(10, data["gainInteractionRange"][0]/ 20)
+                            max_lin = pow(10, data["gainInteractionRange"][1]/ 20)
+                            gain_range = GainInteractionRange(min=min_lin,
+                                                              max=max_lin)    
+                            aoi.gainInteractionRange = gain_range
+                    adm_item.audio_object.audioObjectInteraction = aoi
     return builder.adm
 
 
