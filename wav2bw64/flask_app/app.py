@@ -11,18 +11,21 @@ from .cmdline import parse_command_line
 #sys.path.append("../")
 from wav2bw64.fileio import get_wav_info, generate_bw64_file
 
-UPLOAD_FOLDER = 'uploads'
+BASE_PATH = os.path.abspath(os.path.dirname(__file__))
+SVELTE_FOLDER = '../svelte_app/public/'
+UPLOAD_FOLDER_NAME = 'uploads'
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['UPLOAD_FOLDER'] = BASE_PATH + '/' + UPLOAD_FOLDER_NAME
 app.config['MAX_CONTENT_LENGTH'] = 512 * 1024 * 1024 ## TODO: expose this to command line?
 
 
 # Path for our main Svelte page
 @app.route("/", methods=['GET', 'POST'])
 def base():
+    logging.debug("Your uploaded and generated files are stored under: %s" % app.config['UPLOAD_FOLDER'])
     if request.method == 'POST':
-        logging.debug("FILE UPLOAD: %s" % request.files['file'].filename)
+        logging.info("FILE UPLOAD: %s" % request.files['file'].filename)
         # check if the post request has the file part
         if 'file' not in request.files:
             logging.error('No file part')
@@ -35,19 +38,19 @@ def base():
             return redirect(request.url)
         else:
             filename = secure_filename(file.filename)
-            if not os.path.exists(UPLOAD_FOLDER):
-                os.mkdir(UPLOAD_FOLDER)
+            if not os.path.exists(app.config['UPLOAD_FOLDER']):
+                os.mkdir(app.config['UPLOAD_FOLDER'])
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             wav_info = get_wav_info(path)
             logging.debug("WAV file info: %s" % wav_info)
             return jsonify({'path': path, 'filename': filename, 'wav_info': wav_info})
-    return send_from_directory('../svelte_app/public/', 'index.html')
+    return send_from_directory(SVELTE_FOLDER, 'index.html')
 
 # Path for all the static files (compiled JS/CSS, etc.)
 @app.route("/<path:path>")
 def home(path):
-    return send_from_directory('../svelte_app/public/', path)
+    return send_from_directory(SVELTE_FOLDER, path)
 
 @app.route('/show_wav_info/<filename>')
 def show_wav_info(filename):
@@ -87,7 +90,7 @@ def set_bw64_config():
     res = generate_bw64_file(in_wav_path, out_bwav_path, adm_dict)
     if res is True:
         out_bwav = out_bwav_path.rsplit('/', 1)[-1]
-        return jsonify({'bw64_file': UPLOAD_FOLDER + "/" + out_bwav})
+        return jsonify({'bw64_file': UPLOAD_FOLDER_NAME + "/" + out_bwav})
     else:
         return 'Something went wrong!', 400
 
