@@ -17,13 +17,11 @@ UPLOAD_FOLDER_NAME = 'uploads'
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = BASE_PATH + '/' + UPLOAD_FOLDER_NAME
-app.config['MAX_CONTENT_LENGTH'] = 512 * 1024 * 1024 ## TODO: expose this to command line?
 
 
 # Path for our main Svelte page
 @app.route("/", methods=['GET', 'POST'])
 def base():
-    logging.debug("Your uploaded and generated files are stored under: %s" % app.config['UPLOAD_FOLDER'])
     if request.method == 'POST':
         logging.info("FILE UPLOAD: %s" % request.files['file'].filename)
         # check if the post request has the file part
@@ -98,14 +96,19 @@ def set_bw64_config():
 def main():
     app.secret_key = 'super secret key'
     args = parse_command_line()
-    #log = logging.getLogger('werkzeug')
+
+    app.config['MAX_CONTENT_LENGTH'] = args.upload_limit * 1024 * 1024
     if args.debug is True:
         logging.basicConfig(level=logging.DEBUG)
-        app.run(debug=True, host=args.host, port=args.port)
+        app.config['DEBUG'] = True        
     else:
         log = logging.getLogger('werkzeug')
         log.setLevel(logging.ERROR)
-        app.run(host=args.host, port=args.port)
+    logging.debug("Your uploaded and generated files are stored under: %s" % app.config['UPLOAD_FOLDER'])
+    logging.debug("Upload limit set to %s MB" % (app.config['MAX_CONTENT_LENGTH'] / 1024 / 1024))
+
+    app.run(host=args.host, port=args.port)
+
 
 
 if __name__ == '__main__':

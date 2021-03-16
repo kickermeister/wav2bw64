@@ -1,11 +1,15 @@
 <script>
   import { Card, CardText, CardActions, ProgressLinear } from 'svelte-materialify/src';
   import { ADMStore, fileInfo } from '../stores.js';
+  import Alert from './Alert.svelte';
+
 
   let wavFile;
   let lastFile = "";
   let showProgress = false;
-  let progressValue = 0;
+  let alertActive = false;
+  let alertMessage;
+  let alertTitle;
 
   $: if (wavFile) {
     // binding to "files" attribute is triggered twice for some reasons, so catching it here
@@ -44,6 +48,13 @@ function uploadFile(file) {
     body: formData,
     redirect: 'follow',
   })
+  .then(function(response) {
+    if (!response.ok) {
+      alertMessage = "Error during WAV upload: " + response.statusText;
+      alertTitle = "Upload Error";
+      alertActive = true;
+    }
+    return response;})
   .then(json)
   .then((e) => {
     console.log("Received: ", e);
@@ -54,13 +65,16 @@ function uploadFile(file) {
       return info;
     });
     ADMStore.addAP();
-  }) // <- Add `progressDone` call here
-  .catch((e) => { console.log('Received Error: ', e);});
+  })
+  .catch((e) => { 
+    console.log('Received Error: ', e);
+  });
 }
 
 </script>
 
 {#if $fileInfo.channels === 0}
+<Alert bind:active={alertActive} bind:message={alertMessage} bind:title={alertTitle} />
 <div class="d-flex justify-center mt-4 mb-4">
   <Card hover style="max-width:500px;">
     <div class="pl-4 pr-4 pt-3">
