@@ -1,23 +1,47 @@
 - name: Audio Programme 1
+  language: eng
+  loudness: -23
   apItems:
-  - name: My Object 1
-    routing: [3]
-    type: Object
   - name: Stereo Bed
     routing: [1, 2]
     type: 0+2+0
-  language: de
-  loudness: -23
+  - name: English Dialogue
+    routing: [4]
+    type: Object
+    object_parameter:
+      position: {azimuth: 0, distance: 1, elevation: 14}
+    importance: 10
+    interactivity:
+      onOffInteract: false
+      azRange: [-30, 30]
+      elRange: [-30, 30]
+      positionInteract: true
 - name: Audio Programme 2
+  language: ger
+  loudness: -23
   apItems:
-  - name: Surround Bed
-    routing: [1, 2, 3, 4, 5, 6]
-    type: 0+5+0
-  - name: Music
-    routing: [7, 8]
+  - name: Stereo Bed
+    routing: [1, 2]
     type: 0+2+0
-  - name: Dialog
+    importance: 10
+    interactivity:
+      onOffInteract: false
+      azRange: [-30, 30]
+      elRange: [-30, 30]
+      gainInteract: false
+      gainInteractionRange: [-6, 6]
+      positionInteract: false
+  - name: German Dialogue
     routing: [3]
     type: Object
-  language: en
-  loudness: -23
+    importance: 10
+    object_parameter:
+      position: {azimuth: 0, distance: 1, elevation: 0}
+    interactivity:
+      onOffInteract: true
+      azRange: [-30, 30]
+      elRange: [-30, 30]
+      gainInteract: true
+      gainInteractionRange: [-6, 6]
+      positionInteract: false
+
