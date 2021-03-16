@@ -2,6 +2,8 @@
 
 A simple tool to add basic [ADM](https://adm.ebu.io/) metadata to a WAV file, according to [EBU Production Profile](https://tech.ebu.ch/publications/adm-production-profile) and export it as [BW64](https://www.itu.int/rec/R-REC-BS.2088/en) file.
 
+<img width="1483" alt="adm_authoring_v0 1 0-alpha2" src="https://user-images.githubusercontent.com/5551263/111299250-038cd900-8650-11eb-896c-f2ed73575a41.png">
+
 ## Installation
 
 ```bash
