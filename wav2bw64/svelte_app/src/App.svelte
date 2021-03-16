@@ -101,43 +101,44 @@
   
  <main>
   <div class="materialApp">
-  <MaterialApp theme='dark'>
-    <FileUpload ></FileUpload>
-    <Alert bind:active={alertActive} bind:message={alertMessage} bind:title={alertTitle} />
-    <!-- Display ADM authoring window only when the wav information has been received from backend and saved to wav_channel store -->
-    {#if $fileInfo.channels > 0}    
-      <Tabs bind:value={tabValue} >
-        <div slot="tabs">
-          <Button on:click={handleAddAP} size="large" class="primary-color mr-2">
-            <Icon path={mdiPlusCircle} />
-          </Button>
-          {#each $ADMStore as ap (ap.id)}
-            <Tab on:click={() => handleAPSelected(ap)}>
-              {ap.name}
-              <a href="#" on:click={() => handleDeleteAP(ap.id)} class="hover_delete"><Icon path={mdiDeleteForever} /></a>
-            </Tab>
+    <MaterialApp theme='dark'>
+      <FileUpload ></FileUpload>
+      <Alert bind:active={alertActive} bind:message={alertMessage} bind:title={alertTitle} />
+      <!-- Display ADM authoring window only when the wav information has been received from backend and saved to wav_channel store -->
+      {#if $fileInfo.channels > 0}    
+        <Tabs bind:value={tabValue} >
+          <div slot="tabs">
+            <Button on:click={handleAddAP} size="large" class="primary-color mr-2">
+              <Icon path={mdiPlusCircle} />
+            </Button>
+            {#each $ADMStore as ap (ap.id)}
+              <Tab on:click={() => handleAPSelected(ap)}>
+                {ap.name}
+                <a href="#" on:click={() => handleDeleteAP(ap.id)} class="hover_delete"><Icon path={mdiDeleteForever} /></a>
+              </Tab>
+            {/each}
+          </div>
+          {#each $ADMStore as ap (ap.id)} 
+            <TabContent>
+              <AudioProgramme bind:activeAP={ap} />
+            </TabContent>
           {/each}
-        </div>
-        {#each $ADMStore as ap (ap.id)} 
-          <TabContent>
-            <AudioProgramme bind:activeAP={ap} />
-          </TabContent>
-        {/each}
-        
-      </Tabs>
-    {/if}
-  </MaterialApp>
+          
+        </Tabs>
+      {/if}
+    </MaterialApp>
+    <div class="mt-2">
+      {#if !isProd}
+        <Button on:click={logStore} class="red white-text">Log Store to Console</Button>
+      {/if}
+      {#if $fileInfo.channels > 0 && $ADMStore.length > 0}
+        <Button on:click={() => exportADM()} class="blue white-text">Export ADM</Button>
+      {/if}
+      {#if $fileInfo.bw64_file}
+        <a href={$fileInfo.bw64_file} download={$fileInfo.bw64_file.split("/").slice(-1)[0]} style="text-decoration: none;"><Button class="green white-text">Download BW64 File</Button></a>
+      {/if}
+    </div>
   </div>
-  {#if !isProd}
-    <Button on:click={logStore} class="red white-text">Log Store to Console</Button>
-  {/if}
-  {#if $fileInfo.channels > 0 && $ADMStore.length > 0}
-    <Button on:click={() => exportADM()} class="blue white-text">Export ADM</Button>
-  {/if}
-  {#if $fileInfo.bw64_file}
-    <a href={$fileInfo.bw64_file} download={$fileInfo.bw64_file.split("/").slice(-1)[0]} style="text-decoration: none;"><Button class="green white-text">Download BW64 File</Button></a>
-  {/if}
-
   {#if !isProd}
     <Textarea readonly class="storeArea" value={stringifiedADMStore} />
   {/if}
