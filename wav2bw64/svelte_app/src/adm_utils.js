@@ -12,7 +12,7 @@ export const LAYOUTS = [
   {name: "7.1+4H / 4+7+0", value: "4+7+0", channels: 12},
   // {name: "7.1+2H / 2+7+0", value: "2+7+0", channels: 10},
   {name: "Object", value: "Object", channels: 1},
-  // {name: "Binaural" , value: "Binaural", channels: 2}
+  {name: "Binaural" , value: "Binaural", channels: 2}
 ];
 
 export function getDisplayedNameFromRange(array){

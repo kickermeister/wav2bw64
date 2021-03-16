@@ -3,6 +3,7 @@ import logging
 import ruamel.yaml
 import lxml.etree
 from fractions import Fraction
+from types import SimpleNamespace
 from wavinfo import WavInfoReader as wavreader
 from numpy import power as pow
 from ear.core import bs2051
@@ -72,12 +73,13 @@ def generate_adm(adm_array, bitDepth=16, sampleRate=48000):
                                             track_index=item["routing"][0] - 1,
                                             block_formats=blocks)
             elif item["type"] == "Binaural":
-                # zero-based index
-                for ch in item["routing"]:
-                    builder.create_item_mono(TypeDefinition.Binaural,
-                                             name=item["name"],
-                                             track_index=ch - 1,
-                                             block_formats=[AudioBlockFormatBinaural()])
+                adm_item = builder.create_multichannel_item(TypeDefinition.Binaural,
+                                                            name=item["name"],
+                                                            system="Binaural",
+                                                            track_idxs=item["routing"],
+                                                            bitDepth=bitDepth,
+                                                            sampleRate=sampleRate,
+                                                            block_formats=[AudioBlockFormatBinaural()])
             elif item["type"] == "HOA":
                 logging.warning("Type HOA not (yet) supported.")
             else:
@@ -179,7 +181,11 @@ class ExtendedADMBuilder(ADMBuilder):
         Returns:
             MonoItem: the created components
         """
-        layout = bs2051.get_layout(system)
+        if type == TypeDefinition.DirectSpeakers:
+            layout = bs2051.get_layout(system)
+        elif type == TypeDefinition.Binaural:
+            l = {"channel_names": ["LeftEar", "RightEar"]}
+            layout = SimpleNamespace(**l)
 
         '''works for 0+2+0 and 0+5+0, needs a function for matching bs2051 with common definitions'''
         pack_format = [x for x in self.adm._apf if x.id == audioPackFormatLookupTable[system]][0]
@@ -212,7 +218,7 @@ class ExtendedADMBuilder(ADMBuilder):
 
         """create new track UIDs for channel bed, beginning with ATU_00000001"""
         track_uids = []
-        for chidx, ch in enumerate(layout.channels):
+        for chidx, _ in enumerate(layout.channel_names):
             track_uid = AudioTrackUID(
                 id="ATU_" + f'{chidx+1:08}',
                 trackIndex=track_idxs[chidx],
