@@ -3,6 +3,7 @@ import logging
 import ruamel.yaml
 import lxml.etree
 from fractions import Fraction
+from types import SimpleNamespace
 from wavinfo import WavInfoReader as wavreader
 from numpy import power as pow
 from ear.core import bs2051
@@ -57,8 +58,8 @@ def generate_adm(adm_array, bitDepth=16, sampleRate=48000):
     for ap in adm_array:
         builder.create_programme(audioProgrammeName=ap["name"], audioProgrammeLanguage=ap["language"])
         for item in ap["apItems"]:
-            if item["type"] in bs2051.layout_names:
             ac = builder.create_content(audioContentName="AC_" + item["name"])
+            if item["type"] in bs2051.layout_names or item["type"] == "0+1+0":
                 adm_item = builder.create_multichannel_item(TypeDefinition.DirectSpeakers,
                                                 name=item["name"],
                                                 system=item["type"],
@@ -179,7 +180,11 @@ class ExtendedADMBuilder(ADMBuilder):
         Returns:
             MonoItem: the created components
         """
-        layout = bs2051.get_layout(system)
+        if system == "0+1+0":
+            l = {"channel_names": ["M+000"]}
+            layout = SimpleNamespace(**l)
+        else:
+            layout = bs2051.get_layout(system)
 
         '''works for 0+2+0 and 0+5+0, needs a function for matching bs2051 with common definitions'''
         pack_format = [x for x in self.adm._apf if x.id == audioPackFormatLookupTable[system]][0]
@@ -212,7 +217,7 @@ class ExtendedADMBuilder(ADMBuilder):
 
         """create new track UIDs for channel bed, beginning with ATU_00000001"""
         track_uids = []
-        for chidx, ch in enumerate(layout.channels):
+        for chidx, _ in enumerate(layout.channel_names):
             track_uid = AudioTrackUID(
                 id="ATU_" + f'{chidx+1:08}',
                 trackIndex=track_idxs[chidx],
