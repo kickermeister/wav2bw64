@@ -1,18 +1,18 @@
 
 export const LAYOUTS = [
-  {name: "Mono / 0+1+0", value: "0+1+0", channels: 1},
+  // {name: "Mono / 0+1+0", value: "0+1+0", channels: 1},  // not supported by EAR Production Suite
   {name: "Stereo / 0+2+0", value: "0+2+0", channels: 2},
   {name: "5.1 / 0+5+0", value: "0+5+0", channels: 6},
   {name: "5.1+2H / 2+5+0", value: "2+5+0", channels: 8},
   {name: "5.1+4H / 4+5+0", value: "4+5+0", channels: 10},
-  // {name: "7.2+3H / 3+7+0", value: "3+7+0", channels: 12},
+  // {name: "7.2+3H / 3+7+0", value: "3+7+0", channels: 12}, // 
   {name: "9.1+4H / 4+9+0", value: "4+9+0", channels: 14},
   {name: "22.2 / 9+10+3", value: "9+10+3", channels: 24},
   {name: "7.1 / 0+7+0", value: "0+7+0", channels: 8},
   {name: "7.1+4H / 4+7+0", value: "4+7+0", channels: 12},
   // {name: "7.1+2H / 2+7+0", value: "2+7+0", channels: 10},
   {name: "Object", value: "Object", channels: 1},
-  // {name: "Binaural" , value: "Binaural", channels: 2}
+  // {name: "Binaural" , value: "Binaural", channels: 2} // not supported by EAR & EAR Production Suite
 ];
 
 export function getDisplayedNameFromRange(array){
