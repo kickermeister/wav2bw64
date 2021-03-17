@@ -57,8 +57,8 @@ def generate_adm(adm_array, bitDepth=16, sampleRate=48000):
     for ap in adm_array:
         builder.create_programme(audioProgrammeName=ap["name"], audioProgrammeLanguage=ap["language"])
         for item in ap["apItems"]:
-            if item["type"] in bs2051.layout_names:
             ac = builder.create_content(audioContentName="AC_" + item["name"])
+            if item["type"] in bs2051.layout_names:
                 adm_item = builder.create_multichannel_item(TypeDefinition.DirectSpeakers,
                                                 name=item["name"],
                                                 system=item["type"],
