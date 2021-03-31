@@ -8,7 +8,8 @@ from numpy import power as pow
 from ear.core import bs2051
 from ear.fileio import openBw64
 from ear.fileio.adm.builder import ADMBuilder
-from ear.fileio.adm.elements import (AudioObject,
+from ear.fileio.adm.elements import (LoudnessMetadata,
+                                     AudioObject,
                                      AudioObjectInteraction,
                                      GainInteractionRange,
                                      PositionInteractionRange,
@@ -55,9 +56,23 @@ def generate_adm(adm_array, bitDepth=16, sampleRate=48000):
     builder = ExtendedADMBuilder()
     builder.load_common_definitions()
     for ap in adm_array:
-        builder.create_programme(audioProgrammeName=ap["name"], audioProgrammeLanguage=ap["language"])
+        audioProgramme = builder.create_programme(audioProgrammeName=ap["name"], audioProgrammeLanguage=ap["language"])
+        if "loudness" in ap:
+            loud = LoudnessMetadata()
+            kwargs = {}
+            for attr in ["loudnessMethod", "loudnessRecType", "loudnessCorrectionType"]:
+                if attr in ap["loudness"] and ap["loudness"][attr] != None:
+                    kwargs[attr] = ap["loudness"][attr]
+            for attr in ["integratedLoudness", "loudnessRange", "maxTruePeak",
+                         "maxMomentary", "maxShortTerm", "dialogueLoudness"]:
+                if attr in ap["loudness"] and ap["loudness"][attr] != None:
+                    kwargs[attr] = float(ap["loudness"][attr])
+            loud = LoudnessMetadata(**kwargs)
+            audioProgramme.loudnessMetadata = loud
         for item in ap["apItems"]:
             ac = builder.create_content(audioContentName="AC_" + item["name"])
+            # if item["dialogue"] in range(0, 2):
+            #     ac.dialogue = item["dialogue"]
             if item["type"] in bs2051.layout_names:
                 adm_item = builder.create_multichannel_item(TypeDefinition.DirectSpeakers,
                                                 name=item["name"],

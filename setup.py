@@ -9,7 +9,7 @@ setup(
     long_description_content_type='text/markdown',
     include_package_data=True,
     install_requires=[
-        'ear @ git+https://github.com/felix-lau/ebu_adm_renderer.git',
+        'ear @ git+https://github.com/kickermeister/ebu_adm_renderer.git@feature_loudness',
         'wavinfo~=1.6.2',
         'Flask==1.1.2'
     ],

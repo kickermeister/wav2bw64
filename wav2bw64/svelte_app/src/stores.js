@@ -6,7 +6,15 @@ function getAudioProgrammeStructure(){
   return {
     id: ID(),
     name: "Audio Programme 1", 
-    loudness: -23,
+    loudness: {loudnessMethod: "ITU-R BS.1770", 
+               loudnessRecType: "EBU R128",
+               loudnessCorrectionType: null,
+               integratedLoudness: -23.0,
+               loudnessRange: 12.0, 
+               maxTruePeak: -8.0, 
+               maxMomentary: -16.2, 
+               maxShortTerm: null, 
+               dialogueLoudness: -20.2},
     apItems: [],
     language: "eng"
   }
@@ -61,6 +69,7 @@ function Store() {
                              routing: [],
                              id: ID(),
                              importance: 10,
+                             dialogue: null,
                              interactivity: {
                                onOffInteract: false,
                                gainInteract: false,
