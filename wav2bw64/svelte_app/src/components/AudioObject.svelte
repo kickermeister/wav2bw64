@@ -1,14 +1,13 @@
 <script>
   import { Tabs, Tab, TabContent } from 'svelte-materialify/src';
   import { ADMStore } from '../stores.js';
-  import Routing from './Routing.svelte';
+  import BasicSettings from './BasicSettings.svelte';
   import Interactivity from './Interactivity.svelte';
-  import Importance from './Importance.svelte';
   import ObjectParameter from './ObjectParameter.svelte';
   
   export let activeItem;
   let activeItemSettings = 0;
-  let tabs = ["Routing", "Interactivity", "Importance", "Object"];
+  let tabs = ["Basic", "Interactivity", "Object"];
   let hideObjectsTab = true;
   let hideTab = true;
   $: if (typeof(activeItem) !== "undefined"){
@@ -39,12 +38,10 @@
     {#each tabs as tab}
       <TabContent>
         <div>
-          {#if tab === "Routing"}
-            <Routing activeItem={activeItem}/>
+          {#if tab === "Basic"}
+            <BasicSettings activeItem={activeItem}/>
           {:else if tab === "Interactivity"}
             <Interactivity activeItem={activeItem} />
-          {:else if tab === "Importance"}
-            <Importance activeItem={activeItem} />
           {:else if tab === "Object"}
             <ObjectParameter activeItem={activeItem} />
           {/if}
